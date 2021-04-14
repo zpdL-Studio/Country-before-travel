@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart'; 
 import 'package:get/get.dart';
 
-import 'src/config/routes.dart';
+import 'src/pages/routes.dart';
 import 'src/config/theme.dart';
 
 import 'package:country_before_travel/res/values.dart' as R;
