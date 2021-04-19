@@ -3,14 +3,19 @@ import 'package:get/get.dart';
 
 // ignore: camel_case_types
 class color {
+  static const ultimate_gray = Color.fromARGB(0xFF, 147, 149, 151); /// 0x939597
+  static const cloud_dance = Color.fromARGB(0xFF, 240, 238, 233); /// 0xF0EEE9
+  static const illuminating = Color.fromARGB(0xFF, 245, 223, 77); /// 0xF5DF4D
+
+
   static const Color transparent = Colors.transparent;
 
   static const white = Colors.white;
   static const black = Colors.black;
 
-  static const ultimate_gray = Color.fromARGB(0xFF, 147, 149, 151); /// 0x939597
-  static const cloud_dance = Color.fromARGB(0xFF, 240, 238, 233); /// 0xF0EEE9
-  static const illuminating = Color.fromARGB(0xFF, 245, 223, 77); /// 0xF5DF4D
+  static Color get primaryColor => Get.theme.primaryColor;
+  static Color get backgroundColor => Get.theme.backgroundColor;
+  static Color get accentColor => Get.theme.accentColor;
 }
 
 extension ColorTextStyle on Color {

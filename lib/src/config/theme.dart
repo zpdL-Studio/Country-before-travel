@@ -5,9 +5,13 @@ import 'package:flutter/material.dart';
 /// AVIARY
 /// Aviary is a lively and joyful grouping of color emblematic of vibrant and eye-catching rich bird plumage. PANTONE 17-5104 Ultimate Gray brings a natural element to this upbeat palette of cheery brights that includes PANTONE 13-0647 Illuminating, while the contrast of a lofty white PANTONE 11-4201 Cloud Dancer injects drama.
 ThemeData get themeAviary {
+  final defaultThemeData = ThemeData();
+
   return ThemeData(
     primaryColor: R.color.ultimate_gray,
     backgroundColor: R.color.cloud_dance,
     accentColor: R.color.illuminating,
+    scaffoldBackgroundColor: R.color.cloud_dance,
+    textTheme: defaultThemeData.textTheme.apply(displayColor: R.color.black.withAlpha(0x8A), bodyColor: R.color.black,)
   );
 }

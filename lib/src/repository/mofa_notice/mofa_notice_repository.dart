@@ -1,10 +1,14 @@
 import 'package:get/get.dart';
 
 import '../exceptions.dart';
+import '../repository_helper.dart';
 import 'mofa_notice.dart';
 
+/// 외교부_공지사항
+/// https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15075341
+
 abstract class MofaNoticeRepository {
-  Future<Response> getList({int pageNo = 1, int numOfRows = 100});
+  Future<MofaNoticeResponse> getList({int pageNo = 1, int numOfRows = 100});
 }
 
 class MofaNoticeProvider extends GetConnect implements MofaNoticeRepository {
@@ -23,17 +27,14 @@ class MofaNoticeProvider extends GetConnect implements MofaNoticeRepository {
   }
 
   @override
-  Future<Response<MofaNoticeResponse>> getList({int pageNo = 1, int numOfRows = 100}) async {
+  Future<MofaNoticeResponse> getList({int pageNo = 1, int numOfRows = 100}) async {
     final res = await get<MofaNoticeResponse>('/getNoticeList2', query: {
       'serviceKey': _serviceKey,
       'returnType': _returnType,
       'numOfRows': numOfRows.toString(),
       'pageNo': pageNo.toString(),
     });
-    if(res.isOk) {
-      return res;
-    }
-    throw RepositoryStatueException.fromResponse(res);
+    return decodeFromResponse(res);
   }
 }
 
