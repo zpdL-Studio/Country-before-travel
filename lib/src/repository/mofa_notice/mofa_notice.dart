@@ -21,7 +21,7 @@ class MofaNoticeModel {
   final String id;
   final String title;
   final String written_dt;
-  final String txt_origin_cn;
+  final String? txt_origin_cn;
   final String file_download_url;
 
   MofaNoticeModel({required this.id, required this.title, required this.written_dt, required this.txt_origin_cn, required this.file_download_url});

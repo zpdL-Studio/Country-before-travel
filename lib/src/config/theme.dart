@@ -7,11 +7,24 @@ import 'package:flutter/material.dart';
 ThemeData get themeAviary {
   final defaultThemeData = ThemeData();
 
+  // final Color? effectiveColor = color
+  //     ?? (context != null ? (DividerTheme.of(context).color ?? Theme.of(context).dividerColor) : null);
+  // final double effectiveWidth =  width
+  //     ?? (context != null ? DividerTheme.of(context).thickness : null)
+  //     ?? 0.0;
+
   return ThemeData(
     primaryColor: R.color.ultimate_gray,
     backgroundColor: R.color.cloud_dance,
     accentColor: R.color.illuminating,
     scaffoldBackgroundColor: R.color.cloud_dance,
-    textTheme: defaultThemeData.textTheme.apply(displayColor: R.color.black.withAlpha(0x8A), bodyColor: R.color.black,)
+    textTheme: defaultThemeData.textTheme.apply(displayColor: R.color.black.withAlpha(0x8A), bodyColor: R.color.black,),
+    dividerTheme: DividerThemeData(
+      color: R.color.ultimate_gray,
+      indent: 16,
+      endIndent: 16,
+      thickness: 0,
+      space: 0
+    )
   );
 }

@@ -32,7 +32,7 @@ MofaNoticeModel _$MofaNoticeModelFromJson(Map<String, dynamic> json) {
     id: json['id'] as String,
     title: json['title'] as String,
     written_dt: json['written_dt'] as String,
-    txt_origin_cn: json['txt_origin_cn'] as String,
+    txt_origin_cn: json['txt_origin_cn'] != null ? json['txt_origin_cn'] as String : null,
     file_download_url: json['file_download_url'] as String,
   );
 }
