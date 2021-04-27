@@ -2,25 +2,35 @@ import 'package:flutter/material.dart';
 
 import '../../responsive_config.dart';
 import '../responsive_layout.dart';
-import 'responsive_parameter.dart';
+import 'responsive_builder.dart';
 
 class ResponsiveScaffoldDrawer extends StatefulWidget {
 
   const ResponsiveScaffoldDrawer({
     Key? key,
-    required this.drawer,
+    required this.drawerBuilder,
     this.appBarBuilder,
     this.bodyBuilder,
-    this.parameter = const ResponsiveScaffoldParameter(),
+    this.builder = const ResponsiveScaffoldBuilder(),
   }) : super(key: key);
 
-  final ResponsiveDrawerParameter drawer;
-  final ResponsiveAppbarBuilder? appBarBuilder;
-  final ResponsiveBodyBuilder? bodyBuilder;
-  final ResponsiveScaffoldParameter parameter;
+  final ResponsiveDrawerBuilder drawerBuilder;
+  final ResponsiveAppbarBuilderCallback? appBarBuilder;
+  final ResponsiveBodyBuilderCallback? bodyBuilder;
+  final ResponsiveScaffoldBuilder builder;
 
   @override
   _ResponsiveScaffoldDrawerState createState() => _ResponsiveScaffoldDrawerState();
+
+  DrawerState deviceToDrawerState(ResponsiveDevice device) {
+    switch (device) {
+      case ResponsiveDevice.MOBILE:
+        return DrawerState.MENU;
+      case ResponsiveDevice.TABLET:
+      case ResponsiveDevice.DESKTOP:
+        return DrawerState.DRAWER;
+    }
+  }
 }
 
 class _ResponsiveScaffoldDrawerState extends State<ResponsiveScaffoldDrawer> with SingleTickerProviderStateMixin {
@@ -48,8 +58,7 @@ class _ResponsiveScaffoldDrawerState extends State<ResponsiveScaffoldDrawer> wit
   Widget build(BuildContext context) {
     return ResponsiveLayoutBuilder(
       builder: (BuildContext context, ResponsiveDevice device, BoxConstraints constraints) {
-
-        DrawerState status = responsiveDeviceToDrawerState(device);
+        DrawerState status = widget.deviceToDrawerState(device);
         switch(this._drawerState) {
           case null:
             this._drawerState = status;
@@ -99,85 +108,36 @@ class _ResponsiveScaffoldDrawerState extends State<ResponsiveScaffoldDrawer> wit
 
         switch(this._drawerState!) {
           case DrawerState.MENU:
-            return _buildTheMenu(context, device, widget.appBarBuilder, widget.bodyBuilder, widget.drawer);
+            return buildDrawerMenu(
+              context,
+              device,
+              widget.builder,
+              widget.appBarBuilder,
+              widget.bodyBuilder,
+              widget.drawerBuilder,
+            );
           case DrawerState.MENU_TO_DRAWER:
           case DrawerState.DRAWER:
           case DrawerState.DRAWER_TO_MENU:
-            return _buildTheDrawer(context, device, widget.appBarBuilder, widget.bodyBuilder, widget.drawer, constraints);
+            return buildDrawerView(
+                context,
+                device,
+                widget.builder,
+                widget.appBarBuilder,
+                widget.bodyBuilder,
+                widget.drawerBuilder,
+                constraints,
+                _drawerAnimation.value,
+              );
         }
       },
     );
   }
-
-  Widget _buildTheMenu(
-      BuildContext context,
-      ResponsiveDevice type,
-      ResponsiveAppbarBuilder? appBarBuilder,
-      ResponsiveBodyBuilder? bodyBuilder,
-      ResponsiveDrawerParameter drawer) {
-    final appBarBuilder = this.widget.appBarBuilder;
-    final bodyBuilder = this.widget.bodyBuilder;
-
-    return widget.parameter.build(
-        appBar: appBarBuilder != null ? appBarBuilder(
-            context,
-            type,
-            true) : null,
-        body: Stack(
-          children: [
-            Positioned.fill(
-                child: bodyBuilder != null
-                    ? bodyBuilder(context, type, true, false)
-                    : Container()),
-          ],
-        ),
-        drawer: drawer.builder(context, type),
-        responsiveDrawer: drawer
-    );
-  }
-
+  
   void _drawerAnimate() {
     if(mounted) {
       setState(() {
       });
     }
-  }
-
-  Widget _buildTheDrawer(
-      BuildContext context,
-      ResponsiveDevice device,
-      ResponsiveAppbarBuilder? appBarBuilder,
-      ResponsiveBodyBuilder? bodyBuilder,
-      ResponsiveDrawerParameter drawer,
-      BoxConstraints constraints) {
-    final PreferredSizeWidget? appBar = appBarBuilder != null ? appBarBuilder(context, device, false) : null;
-    final double height = constraints.maxHeight - (appBar?.preferredSize.height ?? 0);
-    double drawerWidth = ResponsiveConfig().getDrawerWidth(constraints.maxWidth);
-
-    double drawerAnimationX = drawerWidth * _drawerAnimation.value - drawerWidth;
-    double drawerAnimationOpacity = _drawerAnimation.value > 0.25 ? 1.0 : _drawerAnimation.value * 4;
-    return widget.parameter.build(
-      appBar: appBar,
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          Positioned.fill(
-              left: drawerAnimationX + drawerWidth,
-              child: bodyBuilder != null
-                  ? bodyBuilder(context, device, false, false)
-                  : Container()),
-          Positioned(
-            left: drawerAnimationX,
-            width: drawerWidth,
-            height: height,
-            child: Opacity(
-                opacity: drawerAnimationOpacity,
-                child: drawer.builder(context, device)),
-          )
-        ],
-      ),
-      drawer: null,
-      responsiveDrawer: drawer,
-    );
   }
 }

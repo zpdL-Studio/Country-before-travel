@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../responsive_config.dart';
 import '../responsive_layout.dart';
-import 'responsive_parameter.dart';
+import 'responsive_builder.dart';
 
 class ResponsiveScaffoldSub extends StatefulWidget {
 
@@ -11,16 +11,26 @@ class ResponsiveScaffoldSub extends StatefulWidget {
     this.appBarBuilder,
     this.bodyBuilder,
     required this.subBuilder,
-    this.parameter = const ResponsiveScaffoldParameter(),
+    this.builder = const ResponsiveScaffoldBuilder(),
   }) : super(key: key);
 
-  final ResponsiveAppbarBuilder? appBarBuilder;
-  final ResponsiveBodyBuilder? bodyBuilder;
-  final ResponsiveSubBuilder subBuilder;
-  final ResponsiveScaffoldParameter parameter;
+  final ResponsiveAppbarBuilderCallback? appBarBuilder;
+  final ResponsiveBodyBuilderCallback? bodyBuilder;
+  final ResponsiveSubBuilderCallback subBuilder;
+  final ResponsiveScaffoldBuilder builder;
 
   @override
   _ResponsiveScaffoldSubState createState() => _ResponsiveScaffoldSubState();
+
+  SubState deviceToSubState(ResponsiveDevice device) {
+    switch (device) {
+      case ResponsiveDevice.MOBILE:
+        return SubState.MENU;
+      case ResponsiveDevice.TABLET:
+      case ResponsiveDevice.DESKTOP:
+        return SubState.SUB;
+    }
+  }
 }
 
 class _ResponsiveScaffoldSubState extends State<ResponsiveScaffoldSub> with SingleTickerProviderStateMixin {
@@ -48,8 +58,7 @@ class _ResponsiveScaffoldSubState extends State<ResponsiveScaffoldSub> with Sing
   Widget build(BuildContext context) {
     return ResponsiveLayoutBuilder(
       builder: (BuildContext context, ResponsiveDevice device, BoxConstraints constraints) {
-
-        final SubState status = responsiveDeviceToSubState(device);
+        final SubState status = widget.deviceToSubState(device);
         switch(this._subState) {
           case null:
             this._subState = status;
@@ -98,37 +107,28 @@ class _ResponsiveScaffoldSubState extends State<ResponsiveScaffoldSub> with Sing
 
         switch(this._subState!) {
           case SubState.MENU:
-            return _buildTheMenu(context, device, widget.appBarBuilder, widget.bodyBuilder);
+            return buildSubMenu(
+              context,
+              device,
+              widget.builder,
+              widget.appBarBuilder,
+              widget.bodyBuilder,
+            );
           case SubState.MENU_TO_SUB:
           case SubState.SUB:
           case SubState.SUB_TO_MENU:
-            return _buildTheSub(context, device, widget.appBarBuilder, widget.bodyBuilder, widget.subBuilder, constraints);
+            return buildSubView(
+                context,
+                device,
+                widget.builder,
+                widget.appBarBuilder,
+                widget.bodyBuilder,
+                widget.subBuilder,
+                constraints,
+                _subAnimation.value,
+              );
         }
       },
-    );
-  }
-
-  Widget _buildTheMenu(
-      BuildContext context,
-      ResponsiveDevice device,
-      ResponsiveAppbarBuilder? appBarBuilder,
-      ResponsiveBodyBuilder? bodyBuilder) {
-    final appBarBuilder = this.widget.appBarBuilder;
-    final bodyBuilder = this.widget.bodyBuilder;
-
-    return widget.parameter.build(
-        appBar: appBarBuilder != null ? appBarBuilder(
-            context,
-            device,
-            false) : null,
-        body: Stack(
-          children: [
-            Positioned.fill(
-                child: bodyBuilder != null
-                    ? bodyBuilder(context, device, false, true)
-                    : Container()),
-          ],
-        ),
     );
   }
 
@@ -137,42 +137,5 @@ class _ResponsiveScaffoldSubState extends State<ResponsiveScaffoldSub> with Sing
       setState(() {
       });
     }
-  }
-
-  Widget _buildTheSub(
-      BuildContext context,
-      ResponsiveDevice device,
-      ResponsiveAppbarBuilder? appBarBuilder,
-      ResponsiveBodyBuilder? bodyBuilder,
-      ResponsiveSubBuilder subBuilder,
-      BoxConstraints constraints) {
-    final PreferredSizeWidget? appBar = appBarBuilder != null ? appBarBuilder(context, device, false) : null;
-    final double height = constraints.maxHeight - (appBar?.preferredSize.height ?? 0);
-    double subWidth = ResponsiveConfig().getSubWidth(constraints.maxWidth);
-
-    double animationX = subWidth * _subAnimation.value - subWidth;
-    double drawerAnimationOpacity = _subAnimation.value > 0.25 ? 1.0 : _subAnimation.value * 4;
-
-    return widget.parameter.build(
-      appBar: appBar,
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          Positioned.fill(
-              right: animationX + subWidth,
-              child: bodyBuilder != null
-                  ? bodyBuilder(context, device, false, false)
-                  : Container()),
-          Positioned(
-            right: animationX,
-            width: subWidth,
-            height: height,
-            child: Opacity(
-                opacity: drawerAnimationOpacity,
-                child: subBuilder(context, device)),
-          )
-        ],
-      ),
-    );
   }
 }

@@ -2,30 +2,74 @@ import 'package:flutter/material.dart';
 
 import '../../responsive_config.dart';
 import '../responsive_layout.dart';
-import 'responsive_parameter.dart';
+import 'responsive_builder.dart';
 
-class ResponsiveScaffoldPreferDrawer extends StatefulWidget {
+class ResponsiveScaffoldDrawAndSub extends StatefulWidget {
 
-  const ResponsiveScaffoldPreferDrawer({
+  const ResponsiveScaffoldDrawAndSub({
     Key? key,
-    required this.drawer,
+    required this.drawerBuilder,
     this.appBarBuilder,
     this.bodyBuilder,
     required this.subBuilder,
-    this.parameter = const ResponsiveScaffoldParameter(),
+    this.builder = const ResponsiveScaffoldBuilder(),
+    this.prefer = ResponsiveScaffoldPrefer.DRAWER,
   }) : super(key: key);
 
-  final ResponsiveDrawerParameter drawer;
-  final ResponsiveAppbarBuilder? appBarBuilder;
-  final ResponsiveBodyBuilder? bodyBuilder;
-  final ResponsiveSubBuilder subBuilder;
-  final ResponsiveScaffoldParameter parameter;
+  final ResponsiveDrawerBuilder drawerBuilder;
+  final ResponsiveAppbarBuilderCallback? appBarBuilder;
+  final ResponsiveBodyBuilderCallback? bodyBuilder;
+  final ResponsiveSubBuilderCallback subBuilder;
+  final ResponsiveScaffoldBuilder builder;
+  final ResponsiveScaffoldPrefer prefer;
 
   @override
-  _ResponsiveScaffoldPreferDrawerState createState() => _ResponsiveScaffoldPreferDrawerState();
+  _ResponsiveScaffoldDrawAndSubState createState() => _ResponsiveScaffoldDrawAndSubState();
+
+  DrawerState deviceToDrawerState(ResponsiveDevice device) {
+    switch(prefer) {
+      case ResponsiveScaffoldPrefer.DRAWER:
+        switch(device) {
+          case ResponsiveDevice.MOBILE:
+            return DrawerState.MENU;
+          case ResponsiveDevice.TABLET:
+          case ResponsiveDevice.DESKTOP:
+            return DrawerState.DRAWER;
+        }
+      case ResponsiveScaffoldPrefer.SUB:
+        switch(device) {
+          case ResponsiveDevice.MOBILE:
+          case ResponsiveDevice.TABLET:
+            return DrawerState.MENU;
+          case ResponsiveDevice.DESKTOP:
+            return DrawerState.DRAWER;
+        }
+    }
+  }
+
+  SubState deviceToSubState(ResponsiveDevice device) {
+    switch(prefer) {
+      case ResponsiveScaffoldPrefer.DRAWER:
+        switch (device) {
+          case ResponsiveDevice.MOBILE:
+          case ResponsiveDevice.TABLET:
+            return SubState.MENU;
+          case ResponsiveDevice.DESKTOP:
+            return SubState.SUB;
+        }
+      case ResponsiveScaffoldPrefer.SUB:
+        switch (device) {
+          case ResponsiveDevice.MOBILE:
+            return SubState.MENU;
+          case ResponsiveDevice.TABLET:
+          case ResponsiveDevice.DESKTOP:
+            return SubState.SUB;
+        }
+    }
+  }
 }
 
-class _ResponsiveScaffoldPreferDrawerState extends State<ResponsiveScaffoldPreferDrawer> with TickerProviderStateMixin {
+class _ResponsiveScaffoldDrawAndSubState extends State<ResponsiveScaffoldDrawAndSub> with TickerProviderStateMixin {
 
   DrawerState? _drawerState;
   late final AnimationController _drawerController;
@@ -44,7 +88,7 @@ class _ResponsiveScaffoldPreferDrawerState extends State<ResponsiveScaffoldPrefe
     _drawerAnimation = CurvedAnimation(parent: _drawerController, curve: Curves.easeOut);
 
     _subController = AnimationController(vsync: this, duration: duration);
-    _subAnimation = CurvedAnimation(parent: _drawerController, curve: Curves.easeOut);
+    _subAnimation = CurvedAnimation(parent: _subController, curve: Curves.easeOut);
   }
 
   @override
@@ -61,7 +105,7 @@ class _ResponsiveScaffoldPreferDrawerState extends State<ResponsiveScaffoldPrefe
   Widget build(BuildContext context) {
     return ResponsiveLayoutBuilder(
       builder: (BuildContext context, ResponsiveDevice device, BoxConstraints constraints) {
-        DrawerState drawerState = responsiveDeviceToDrawerState(device);
+        DrawerState drawerState = widget.deviceToDrawerState(device);
         switch(this._drawerState) {
           case null:
             this._drawerState = drawerState;
@@ -109,7 +153,7 @@ class _ResponsiveScaffoldPreferDrawerState extends State<ResponsiveScaffoldPrefe
             break;
         }
 
-        final SubState subStatus = responsiveDeviceToSubState(device);
+        final SubState subStatus = widget.deviceToSubState(device);
         switch(this._subState) {
           case null:
             this._subState = subStatus;
@@ -160,69 +204,64 @@ class _ResponsiveScaffoldPreferDrawerState extends State<ResponsiveScaffoldPrefe
           case DrawerState.MENU:
             switch(this._subState!) {
               case SubState.MENU:
-                return _buildOnlyMenu(context, device, widget.appBarBuilder, widget.bodyBuilder);
+                return buildDrawerMenu(
+                  context,
+                  device,
+                  widget.builder,
+                  widget.appBarBuilder,
+                  widget.bodyBuilder,
+                  widget.drawerBuilder,
+                  visibleSubMenu: true
+                );
               case SubState.MENU_TO_SUB:
               case SubState.SUB:
               case SubState.SUB_TO_MENU:
-                return _buildTheSub(context, device, widget.appBarBuilder, widget.bodyBuilder, widget.subBuilder, constraints);
+                return buildSubView(
+                    context,
+                    device,
+                    widget.builder,
+                    widget.appBarBuilder,
+                    widget.bodyBuilder,
+                    widget.subBuilder,
+                    constraints,
+                    _subAnimation.value,
+                    drawerBuilder: widget.drawerBuilder,
+                  );
             }
           case DrawerState.MENU_TO_DRAWER:
           case DrawerState.DRAWER:
           case DrawerState.DRAWER_TO_MENU:
-          switch(this._subState!) {
-            case SubState.MENU:
-              return _buildOnlyMenu(context, device, widget.appBarBuilder, widget.bodyBuilder);
-            case SubState.MENU_TO_SUB:
-            case SubState.SUB:
-            case SubState.SUB_TO_MENU:
-              return _buildTheSub(context, device, widget.appBarBuilder, widget.bodyBuilder, widget.subBuilder, constraints);
-          }
+            switch(this._subState!) {
+              case SubState.MENU:
+                return buildDrawerView(
+                  context,
+                  device,
+                  widget.builder,
+                  widget.appBarBuilder,
+                  widget.bodyBuilder,
+                  widget.drawerBuilder,
+                  constraints,
+                  _drawerAnimation.value,
+                  visibleSubMenu: true,
+                );
+              case SubState.MENU_TO_SUB:
+              case SubState.SUB:
+              case SubState.SUB_TO_MENU:
+              return buildDrawerViewAndSubView(
+                  context,
+                  device,
+                  widget.builder,
+                  widget.appBarBuilder,
+                  widget.bodyBuilder,
+                  widget.drawerBuilder,
+                  widget.subBuilder,
+                  constraints,
+                  _drawerAnimation.value,
+                  _subAnimation.value,
+                );
+            }
         }
       },
-    );
-  }
-
-  DrawerState responsiveDeviceToDrawerState(ResponsiveDevice device) {
-    switch(device) {
-      case ResponsiveDevice.MOBILE:
-        return DrawerState.MENU;
-      case ResponsiveDevice.TABLET:
-      case ResponsiveDevice.DESKTOP:
-        return DrawerState.DRAWER;
-    }
-  }
-
-  SubState responsiveDeviceToSubState(ResponsiveDevice device) {
-    switch (device) {
-      case ResponsiveDevice.MOBILE:
-      case ResponsiveDevice.TABLET:
-        return SubState.MENU;
-      case ResponsiveDevice.DESKTOP:
-        return SubState.SUB;
-    }
-  }
-
-  Widget _buildOnlyMenu(
-      BuildContext context,
-      ResponsiveDevice device,
-      ResponsiveAppbarBuilder? appBarBuilder,
-      ResponsiveBodyBuilder? bodyBuilder) {
-    final appBarBuilder = this.widget.appBarBuilder;
-    final bodyBuilder = this.widget.bodyBuilder;
-
-    return widget.parameter.build(
-        appBar: appBarBuilder != null ? appBarBuilder(
-            context,
-            device,
-            false) : null,
-        body: Stack(
-          children: [
-            Positioned.fill(
-                child: bodyBuilder != null
-                    ? bodyBuilder(context, device, false, true)
-                    : Container()),
-          ],
-        ),
     );
   }
 
@@ -233,28 +272,37 @@ class _ResponsiveScaffoldPreferDrawerState extends State<ResponsiveScaffoldPrefe
     }
   }
 
-  Widget _buildTheDrawerAndSubMenu(
-      BuildContext context,
-      ResponsiveDevice device,
-      ResponsiveAppbarBuilder? appBarBuilder,
-      ResponsiveBodyBuilder? bodyBuilder,
-      ResponsiveDrawerParameter drawer,
-      BoxConstraints constraints
-      ) {
+  Widget buildDrawerViewAndSubView(
+    BuildContext context,
+    ResponsiveDevice device,
+    ResponsiveScaffoldBuilder builder,
+    ResponsiveAppbarBuilderCallback? appBarBuilder,
+    ResponsiveBodyBuilderCallback? bodyBuilder,
+    ResponsiveDrawerBuilder drawerBuilder,
+    ResponsiveSubBuilderCallback subBuilder,
+    BoxConstraints constraints,
+    double drawerAnimation,
+    double subAnimation,
+  ) {
     final PreferredSizeWidget? appBar = appBarBuilder != null ? appBarBuilder(context, device, false) : null;
     final double height = constraints.maxHeight - (appBar?.preferredSize.height ?? 0);
+
     double drawerWidth = ResponsiveConfig().getDrawerWidth(constraints.maxWidth);
+    double drawerAnimationX = drawerWidth * drawerAnimation - drawerWidth;
+    double drawerAnimationOpacity = drawerAnimation > 0.25 ? 1.0 : drawerAnimation * 4;
 
-    double drawerAnimationX = drawerWidth * _drawerAnimation.value - drawerWidth;
-    double drawerAnimationOpacity = _drawerAnimation.value > 0.25 ? 1.0 : _drawerAnimation.value * 4;
+    double subWidth = ResponsiveConfig().getSubWidth(constraints.maxWidth - drawerWidth);
+    double subAnimationX = subWidth * subAnimation - subWidth;
+    double subAnimationOpacity = subAnimation > 0.25 ? 1.0 : subAnimation * 4;
 
-    return widget.parameter.build(
+    return builder.build(
       appBar: appBar,
       body: Stack(
         fit: StackFit.expand,
         children: [
           Positioned.fill(
               left: drawerAnimationX + drawerWidth,
+              right: subAnimationX + subWidth,
               child: bodyBuilder != null
                   ? bodyBuilder(context, device, false, false)
                   : Container()),
@@ -264,49 +312,20 @@ class _ResponsiveScaffoldPreferDrawerState extends State<ResponsiveScaffoldPrefe
             height: height,
             child: Opacity(
                 opacity: drawerAnimationOpacity,
-                child: drawer.builder(context, device)),
-          )
-        ],
-      ),
-      drawer: null,
-      responsiveDrawer: drawer,
-    );
-  }
-
-  Widget _buildTheSub(
-      BuildContext context,
-      ResponsiveDevice device,
-      ResponsiveAppbarBuilder? appBarBuilder,
-      ResponsiveBodyBuilder? bodyBuilder,
-      ResponsiveSubBuilder subBuilder,
-      BoxConstraints constraints) {
-    final PreferredSizeWidget? appBar = appBarBuilder != null ? appBarBuilder(context, device, false) : null;
-    final double height = constraints.maxHeight - (appBar?.preferredSize.height ?? 0);
-    double subWidth = ResponsiveConfig().getSubWidth(constraints.maxWidth);
-
-    double animationX = subWidth * _subAnimation.value - subWidth;
-    double drawerAnimationOpacity = _subAnimation.value > 0.25 ? 1.0 : _subAnimation.value * 4;
-
-    return widget.parameter.build(
-      appBar: appBar,
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          Positioned.fill(
-              right: animationX + subWidth,
-              child: bodyBuilder != null
-                  ? bodyBuilder(context, device, false, false)
-                  : Container()),
+                child: drawerBuilder.builder(context, device)),
+          ),
           Positioned(
-            right: animationX,
+            right: subAnimationX,
             width: subWidth,
             height: height,
             child: Opacity(
-                opacity: drawerAnimationOpacity,
+                opacity: subAnimationOpacity,
                 child: subBuilder(context, device)),
           )
         ],
       ),
+      drawer: null,
+      responsiveDrawer: drawerBuilder,
     );
   }
 }
