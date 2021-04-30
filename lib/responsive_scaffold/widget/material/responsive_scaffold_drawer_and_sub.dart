@@ -105,7 +105,7 @@ class _ResponsiveScaffoldDrawAndSubState extends State<ResponsiveScaffoldDrawAnd
   Widget build(BuildContext context) {
     return ResponsiveLayoutBuilder(
       builder: (BuildContext context, ResponsiveDevice device, BoxConstraints constraints) {
-        DrawerState drawerState = widget.deviceToDrawerState(device);
+        var drawerState = widget.deviceToDrawerState(device);
         switch(_drawerState) {
           case null:
             _drawerState = drawerState;
@@ -153,7 +153,7 @@ class _ResponsiveScaffoldDrawAndSubState extends State<ResponsiveScaffoldDrawAnd
             break;
         }
 
-        final SubState subStatus = widget.deviceToSubState(device);
+        final subStatus = widget.deviceToSubState(device);
         switch(_subState) {
           case null:
             _subState = subStatus;
@@ -284,16 +284,16 @@ class _ResponsiveScaffoldDrawAndSubState extends State<ResponsiveScaffoldDrawAnd
     double drawerAnimation,
     double subAnimation,
   ) {
-    final PreferredSizeWidget? appBar = appBarBuilder != null ? appBarBuilder(context, device, false) : null;
-    final double height = constraints.maxHeight - (appBar?.preferredSize.height ?? 0);
+    final appBar = appBarBuilder != null ? appBarBuilder(context, device, false) : null;
+    final height = constraints.maxHeight - (appBar?.preferredSize.height ?? 0);
 
-    double drawerWidth = ResponsiveConfig().getDrawerWidth(constraints.maxWidth);
-    double drawerAnimationX = drawerWidth * drawerAnimation - drawerWidth;
-    double drawerAnimationOpacity = drawerAnimation > 0.25 ? 1.0 : drawerAnimation * 4;
+    var drawerWidth = ResponsiveConfig().getDrawerWidth(constraints.maxWidth);
+    var drawerAnimationX = drawerWidth * drawerAnimation - drawerWidth;
+    var drawerAnimationOpacity = drawerAnimation > 0.25 ? 1.0 : drawerAnimation * 4;
 
-    double subWidth = ResponsiveConfig().getSubWidth(constraints.maxWidth - drawerWidth);
-    double subAnimationX = subWidth * subAnimation - subWidth;
-    double subAnimationOpacity = subAnimation > 0.25 ? 1.0 : subAnimation * 4;
+    var subWidth = ResponsiveConfig().getSubWidth(constraints.maxWidth - drawerWidth);
+    var subAnimationX = subWidth * subAnimation - subWidth;
+    var subAnimationOpacity = subAnimation > 0.25 ? 1.0 : subAnimation * 4;
 
     return builder.build(
       appBar: appBar,

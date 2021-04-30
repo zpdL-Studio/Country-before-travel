@@ -58,7 +58,7 @@ class _ResponsiveScaffoldSubState extends State<ResponsiveScaffoldSub> with Sing
   Widget build(BuildContext context) {
     return ResponsiveLayoutBuilder(
       builder: (BuildContext context, ResponsiveDevice device, BoxConstraints constraints) {
-        final SubState status = widget.deviceToSubState(device);
+        final status = widget.deviceToSubState(device);
         switch(_subState) {
           case null:
             _subState = status;

@@ -168,12 +168,12 @@ Widget buildDrawerView(
   double drawerAnimation, {
   bool visibleSubMenu = false,
 }) {
-  final PreferredSizeWidget? appBar = appBarBuilder != null ? appBarBuilder(context, device, false) : null;
-  final double height = constraints.maxHeight - (appBar?.preferredSize.height ?? 0);
-  double drawerWidth = ResponsiveConfig().getDrawerWidth(constraints.maxWidth);
+  final appBar = appBarBuilder != null ? appBarBuilder(context, device, false) : null;
+  final height = constraints.maxHeight - (appBar?.preferredSize.height ?? 0);
+  var drawerWidth = ResponsiveConfig().getDrawerWidth(constraints.maxWidth);
 
-  double drawerAnimationX = drawerWidth * drawerAnimation - drawerWidth;
-  double drawerAnimationOpacity = drawerAnimation > 0.25 ? 1.0 : drawerAnimation * 4;
+  var drawerAnimationX = drawerWidth * drawerAnimation - drawerWidth;
+  var drawerAnimationOpacity = drawerAnimation > 0.25 ? 1.0 : drawerAnimation * 4;
   return builder.build(
     appBar: appBar,
     body: Stack(
@@ -232,12 +232,12 @@ Widget buildSubView(
     BoxConstraints constraints,
     double subAnimation,
     {ResponsiveDrawerBuilder? drawerBuilder}) {
-  final PreferredSizeWidget? appBar = appBarBuilder != null ? appBarBuilder(context, device, false) : null;
-  final double height = constraints.maxHeight - (appBar?.preferredSize.height ?? 0);
-  double subWidth = ResponsiveConfig().getSubWidth(constraints.maxWidth);
+  final appBar = appBarBuilder != null ? appBarBuilder(context, device, false) : null;
+  final height = constraints.maxHeight - (appBar?.preferredSize.height ?? 0);
+  var subWidth = ResponsiveConfig().getSubWidth(constraints.maxWidth);
 
-  double subAnimationX = subWidth * subAnimation - subWidth;
-  double subAnimationOpacity = subAnimation > 0.25 ? 1.0 : subAnimation * 4;
+  var subAnimationX = subWidth * subAnimation - subWidth;
+  var subAnimationOpacity = subAnimation > 0.25 ? 1.0 : subAnimation * 4;
 
   return builder.build(
     appBar: appBar,

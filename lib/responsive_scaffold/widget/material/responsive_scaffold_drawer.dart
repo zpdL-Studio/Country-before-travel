@@ -58,7 +58,7 @@ class _ResponsiveScaffoldDrawerState extends State<ResponsiveScaffoldDrawer> wit
   Widget build(BuildContext context) {
     return ResponsiveLayoutBuilder(
       builder: (BuildContext context, ResponsiveDevice device, BoxConstraints constraints) {
-        DrawerState status = widget.deviceToDrawerState(device);
+        var status = widget.deviceToDrawerState(device);
         switch(_drawerState) {
           case null:
             _drawerState = status;
