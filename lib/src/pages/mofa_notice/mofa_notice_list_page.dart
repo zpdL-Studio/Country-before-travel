@@ -1,9 +1,9 @@
-import 'package:country_before_travel/res/values.dart' as R;
-import 'package:country_before_travel/src/widget/buttons.dart';
-import 'package:country_before_travel/src/widget/loadings.dart';
+import 'package:country_before_travel/res/values.dart' as R; // ignore: library_prefixes, prefer_relative_imports
 import 'package:get/get.dart';
 import 'package:widgets_by_zpdl/material.dart';
 
+import '../../widget/buttons.dart';
+import '../../widget/loadings.dart';
 import 'mofa_notice_controller.dart';
 
 class MofaNoticeListPage extends LoadingView<MofaNoticeListController> {

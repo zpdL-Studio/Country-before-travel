@@ -61,12 +61,12 @@ extension ColorTextStyle on Color {
 
   TextStyle colorToTextStyle(TextStyle? textStyle) {
     final int textStyleAlpha;
-    if(this.alpha == 0xFF) {
-      textStyleAlpha = textStyle?.color?.alpha ?? this.alpha;
+    if(alpha == 0xFF) {
+      textStyleAlpha = textStyle?.color?.alpha ?? alpha;
     } else {
-      textStyleAlpha = this.alpha;
+      textStyleAlpha = alpha;
     }
 
-    return textStyle?.apply(color: this.withAlpha(textStyleAlpha)) ?? TextStyle(color: this);
+    return textStyle?.apply(color: withAlpha(textStyleAlpha)) ?? TextStyle(color: this);
   }
 }

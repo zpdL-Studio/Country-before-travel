@@ -1,6 +1,7 @@
-import 'package:country_before_travel/src/pages/mofa_notice/mofa_notice_controller.dart';
-import 'package:country_before_travel/src/repository/mofa_notice/mofa_notice_repository.dart';
 import 'package:get/get.dart';
+
+import '../../repository/mofa_notice/mofa_notice_repository.dart';
+import 'mofa_notice_controller.dart';
 
 
 class MofaNoticeBindings extends Bindings {

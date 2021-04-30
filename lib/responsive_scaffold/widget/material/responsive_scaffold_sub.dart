@@ -59,15 +59,15 @@ class _ResponsiveScaffoldSubState extends State<ResponsiveScaffoldSub> with Sing
     return ResponsiveLayoutBuilder(
       builder: (BuildContext context, ResponsiveDevice device, BoxConstraints constraints) {
         final SubState status = widget.deviceToSubState(device);
-        switch(this._subState) {
+        switch(_subState) {
           case null:
-            this._subState = status;
+            _subState = status;
             switch(status) {
               case SubState.MENU:
-                this._subController.value = 0.0;
+                _subController.value = 0.0;
                 break;
               case SubState.SUB:
-                this._subController.value = 1.0;
+                _subController.value = 1.0;
                 break;
               case SubState.MENU_TO_SUB:
               case SubState.SUB_TO_MENU:
@@ -77,35 +77,35 @@ class _ResponsiveScaffoldSubState extends State<ResponsiveScaffoldSub> with Sing
             break;
           case SubState.MENU:
             if(status == SubState.SUB) {
-              this._subState = SubState.MENU_TO_SUB;
+              _subState = SubState.MENU_TO_SUB;
               _subController.forward();
             }
             break;
           case SubState.MENU_TO_SUB:
             if(status == SubState.MENU) {
-              this._subState = SubState.SUB_TO_MENU;
+              _subState = SubState.SUB_TO_MENU;
               _subController.reverse();
             } else if(!_subController.isAnimating) {
-              this._subState = SubState.SUB;
+              _subState = SubState.SUB;
             }
             break;
           case SubState.SUB:
             if(status == SubState.MENU) {
-              this._subState = SubState.SUB_TO_MENU;
+              _subState = SubState.SUB_TO_MENU;
               _subController.reverse();
             }
             break;
           case SubState.SUB_TO_MENU:
             if(status == SubState.SUB) {
-              this._subState = SubState.MENU_TO_SUB;
+              _subState = SubState.MENU_TO_SUB;
               _subController.forward();
             } else if(!_subController.isAnimating) {
-              this._subState = SubState.MENU;
+              _subState = SubState.MENU;
             }
             break;
         }
 
-        switch(this._subState!) {
+        switch(_subState!) {
           case SubState.MENU:
             return buildSubMenu(
               context,

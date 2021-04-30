@@ -1,17 +1,17 @@
-export 'colors.dart';
-export 'images.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'images.dart';
 
+export 'colors.dart';
+export 'images.dart';
+
 extension ImagesWidget on images {
   Image widget({Key? key, double? size, double? width, double? height, BoxFit fit = BoxFit.fill}) {
     return Image.asset(
-      this.name,
-      width: size != null ? size : width,
-      height: size != null ? size : height,
+      name,
+      width: size ?? width,
+      height: size ?? height,
       fit: fit,
     );
   }

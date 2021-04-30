@@ -1,7 +1,7 @@
-import 'package:country_before_travel/src/repository/mofa_notice/mofa_notice.dart';
-import 'package:country_before_travel/src/repository/mofa_notice/mofa_notice_repository.dart';
 import 'package:get/get.dart';
-import 'package:meta/meta.dart';
+
+import '../../repository/mofa_notice/mofa_notice.dart';
+import '../../repository/mofa_notice/mofa_notice_repository.dart';
 
 class HomeController extends GetxController {
   final MofaNoticeRepository mofaNoticeRepository;
@@ -9,8 +9,8 @@ class HomeController extends GetxController {
   HomeController({required this.mofaNoticeRepository});
 
   final _obj = ''.obs;
-  set obj(value) => _obj.value = value;
-  get obj => _obj.value;
+  set obj(String value) => _obj.value = value;
+  String get obj => _obj.value;
 
   final _scale = 1.0.obs;
   set scale(double value) => _scale.value = value;
@@ -27,7 +27,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    print("KKH HomeController onInit");
+    print('KKH HomeController onInit');
 
     init();
   }
@@ -35,13 +35,13 @@ class HomeController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    print("KKH HomeController onReady");
+    print('KKH HomeController onReady');
   }
 
   @override
   void onClose() {
     super.onClose();
-    print("KKH HomeController onClose");
+    print('KKH HomeController onClose');
   }
 
   void init() async {

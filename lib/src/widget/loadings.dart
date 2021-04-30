@@ -5,7 +5,7 @@ mixin LoadingController on GetxController {
   final _loading = false.obs;
   int _loadingCount = 0;
 
-  get loading => _loading.value;
+  bool get loading => _loading.value;
 
   void showLoading() {
     if(_loadingCount > 0) {

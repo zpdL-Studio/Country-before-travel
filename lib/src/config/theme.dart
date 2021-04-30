@@ -1,4 +1,4 @@
-import 'package:country_before_travel/res/values.dart' as R;
+import 'package:country_before_travel/res/values.dart' as R; // ignore: library_prefixes, prefer_relative_imports
 import 'package:flutter/material.dart';
 
 /// PANTONE COLOR OF THE YEAR 2021 / PALETTE EXPLORATION

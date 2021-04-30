@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'src/pages/routes.dart';
 import 'src/config/theme.dart';
+import 'src/pages/routes.dart';
 
-import 'package:country_before_travel/res/values.dart' as R;
+// import 'package:country_before_travel/res/values.dart' as R;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

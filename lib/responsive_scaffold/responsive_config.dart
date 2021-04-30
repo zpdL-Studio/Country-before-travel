@@ -48,10 +48,10 @@ class ResponsiveConfig {
 
 extension ResponsiveConfigDevice on ResponsiveConfig {
 
-  void setDeviceWidth(double mobile, tablet) {
+  void setDeviceWidth(double mobile, double tablet) {
     assert(mobile <= tablet);
-    this._mobile = mobile;
-    this._tablet = tablet;
+    _mobile = mobile;
+    _tablet = tablet;
   }
 
   bool isMobile(double width) => width < _mobile;

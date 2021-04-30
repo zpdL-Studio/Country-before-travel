@@ -59,15 +59,15 @@ class _ResponsiveScaffoldDrawerState extends State<ResponsiveScaffoldDrawer> wit
     return ResponsiveLayoutBuilder(
       builder: (BuildContext context, ResponsiveDevice device, BoxConstraints constraints) {
         DrawerState status = widget.deviceToDrawerState(device);
-        switch(this._drawerState) {
+        switch(_drawerState) {
           case null:
-            this._drawerState = status;
+            _drawerState = status;
             switch(status) {
               case DrawerState.MENU:
-                this._drawerController.value = 0.0;
+                _drawerController.value = 0.0;
                 break;
               case DrawerState.DRAWER:
-                this._drawerController.value = 1.0;
+                _drawerController.value = 1.0;
                 break;
               case DrawerState.MENU_TO_DRAWER:
               case DrawerState.DRAWER_TO_MENU:
@@ -77,36 +77,36 @@ class _ResponsiveScaffoldDrawerState extends State<ResponsiveScaffoldDrawer> wit
             break;
           case DrawerState.MENU:
             if(status == DrawerState.DRAWER) {
-              this._drawerState = DrawerState.MENU_TO_DRAWER;
+              _drawerState = DrawerState.MENU_TO_DRAWER;
 
               _drawerController.forward();
             }
             break;
           case DrawerState.MENU_TO_DRAWER:
             if(status == DrawerState.MENU) {
-              this._drawerState = DrawerState.DRAWER_TO_MENU;
+              _drawerState = DrawerState.DRAWER_TO_MENU;
               _drawerController.reverse();
             } else if(!_drawerController.isAnimating) {
-              this._drawerState = DrawerState.DRAWER;
+              _drawerState = DrawerState.DRAWER;
             }
             break;
           case DrawerState.DRAWER:
             if(status == DrawerState.MENU) {
-              this._drawerState = DrawerState.DRAWER_TO_MENU;
+              _drawerState = DrawerState.DRAWER_TO_MENU;
               _drawerController.reverse();
             }
             break;
           case DrawerState.DRAWER_TO_MENU:
             if(status == DrawerState.DRAWER) {
-              this._drawerState = DrawerState.MENU_TO_DRAWER;
+              _drawerState = DrawerState.MENU_TO_DRAWER;
               _drawerController.forward();
             } else if(!_drawerController.isAnimating) {
-              this._drawerState = DrawerState.MENU;
+              _drawerState = DrawerState.MENU;
             }
             break;
         }
 
-        switch(this._drawerState!) {
+        switch(_drawerState!) {
           case DrawerState.MENU:
             return buildDrawerMenu(
               context,

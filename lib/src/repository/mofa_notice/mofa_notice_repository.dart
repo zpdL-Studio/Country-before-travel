@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 
-import '../exceptions.dart';
 import '../repository_helper.dart';
 import 'mofa_notice.dart';
 
@@ -34,8 +33,8 @@ class MofaNoticeProvider extends GetConnect implements MofaNoticeRepository {
       'numOfRows': numOfRows.toString(),
       'pageNo': pageNo.toString(),
     }, headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Headers": "*"
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': '*'
     });
     return decodeFromResponse(res);
   }
@@ -64,8 +63,8 @@ class MofaNoticeProviderWeb extends GetConnect implements MofaNoticeRepository {
       'numOfRows': numOfRows.toString(),
       'pageNo': pageNo.toString(),
     }, headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Headers": "*"
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': '*'
     });
     return decodeFromResponse(res);
   }
