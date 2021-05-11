@@ -1,5 +1,7 @@
-include: package:pedantic/analysis_options.yaml
-
+analyzer:
+  exclude:
+    - "**/*.freezed.dart"
+    - "**/*.g.dart"
 linter:
   rules:
     file_names: true
@@ -7,4 +9,4 @@ linter:
     prefer_mixin: true
     prefer_relative_imports: true
     directives_ordering: true
-#    public_member_api_docs: false
+#    public_member_api_docs: true

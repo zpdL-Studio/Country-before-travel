@@ -6,8 +6,9 @@ part of 'mofa_notice.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-MofaNoticeResponse _$MofaNoticeResponseFromJson(Map<String, dynamic> json) {
-  return MofaNoticeResponse(
+_$_MofaNoticeResponse _$_$_MofaNoticeResponseFromJson(
+    Map<String, dynamic> json) {
+  return _$_MofaNoticeResponse(
     totalCount: json['totalCount'] as int,
     currentCount: json['currentCount'] as int,
     numOfRows: json['numOfRows'] as int,
@@ -18,26 +19,27 @@ MofaNoticeResponse _$MofaNoticeResponseFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$MofaNoticeResponseToJson(MofaNoticeResponse instance) =>
+Map<String, dynamic> _$_$_MofaNoticeResponseToJson(
+        _$_MofaNoticeResponse instance) =>
     <String, dynamic>{
       'totalCount': instance.totalCount,
       'currentCount': instance.currentCount,
       'numOfRows': instance.numOfRows,
       'pageNo': instance.pageNo,
-      'data': instance.data.map((e) => e.toJson()).toList(),
+      'data': instance.data,
     };
 
-MofaNoticeModel _$MofaNoticeModelFromJson(Map<String, dynamic> json) {
-  return MofaNoticeModel(
+_$_MofaNoticeModel _$_$_MofaNoticeModelFromJson(Map<String, dynamic> json) {
+  return _$_MofaNoticeModel(
     id: json['id'] as String,
     title: json['title'] as String,
     written_dt: json['written_dt'] as String,
-    txt_origin_cn: json['txt_origin_cn'] != null ? json['txt_origin_cn'] as String : null,
+    txt_origin_cn: json['txt_origin_cn'] as String?,
     file_download_url: json['file_download_url'] as String,
   );
 }
 
-Map<String, dynamic> _$MofaNoticeModelToJson(MofaNoticeModel instance) =>
+Map<String, dynamic> _$_$_MofaNoticeModelToJson(_$_MofaNoticeModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,

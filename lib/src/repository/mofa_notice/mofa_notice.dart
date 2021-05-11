@@ -1,33 +1,34 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'mofa_notice.freezed.dart';
 part 'mofa_notice.g.dart';
 
 // ignore_for_file: non_constant_identifier_names
-@JsonSerializable(explicitToJson: true)
-class MofaNoticeResponse {
-  final int totalCount;
-  final int currentCount;
-  final int numOfRows;
-  final int pageNo;
-  final List<MofaNoticeModel> data;
+@freezed
+class MofaNoticeResponse with _$MofaNoticeResponse {
+  factory MofaNoticeResponse({
+    required int totalCount,
+    required int currentCount,
+    required int numOfRows,
+    required int pageNo,
+    required List<MofaNoticeModel> data,
+  }) = _MofaNoticeResponse;
 
-  MofaNoticeResponse({required this.totalCount, required this.currentCount, required this.numOfRows, required this.pageNo, required this.data});
   factory MofaNoticeResponse.fromJson(Map<String, dynamic> json) => _$MofaNoticeResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$MofaNoticeResponseToJson(this);
+
 }
 
-@JsonSerializable()
-class MofaNoticeModel {
-  final String id;
-  final String title;
-  final String written_dt;
-  final String? txt_origin_cn;
-  final String file_download_url;
-
-  MofaNoticeModel({required this.id, required this.title, required this.written_dt, required this.txt_origin_cn, required this.file_download_url});
+@freezed
+class MofaNoticeModel with _$MofaNoticeModel {
+  factory MofaNoticeModel({
+    required String id,
+    required String title,
+    required String written_dt,
+    required String? txt_origin_cn,
+    required String file_download_url,
+  }) = _MofaNoticeModel;
 
   factory MofaNoticeModel.fromJson(Map<String, dynamic> json) => _$MofaNoticeModelFromJson(json);
-  Map<String, dynamic> toJson() => _$MofaNoticeModelToJson(this);
 }
 
 
