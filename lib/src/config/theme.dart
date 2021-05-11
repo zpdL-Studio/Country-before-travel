@@ -25,6 +25,7 @@ ThemeData get themeAviary {
       endIndent: 16,
       thickness: 0,
       space: 0
-    )
+    ),
+    appBarTheme: defaultThemeData.appBarTheme.copyWith(brightness: Brightness.dark)
   );
 }

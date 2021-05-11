@@ -45,11 +45,10 @@ class HomeController extends GetxController {
   }
 
   void init() async {
-    // try {
-    //   mofaNoticeResponse = await mofaNoticeRepository.getList(numOfRows: 5);
-    // } catch(e) {
-    //   print("KKH e");
-    //   _mofaNoticeResponse.addError(e);
-    // }
+    try {
+      mofaNoticeResponse = await mofaNoticeRepository.getList(numOfRows: 5);
+    } catch(e) {
+      _mofaNoticeResponse.addError(e);
+    }
   }
 }
