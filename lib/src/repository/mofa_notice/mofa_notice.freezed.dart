@@ -279,7 +279,7 @@ class _$MofaNoticeModelTearOff {
       {required String id,
       required String title,
       required String written_dt,
-      required String? txt_origin_cn,
+      String? txt_origin_cn,
       required String file_download_url}) {
     return _MofaNoticeModel(
       id: id,
@@ -434,7 +434,7 @@ class _$_MofaNoticeModel implements _MofaNoticeModel {
       {required this.id,
       required this.title,
       required this.written_dt,
-      required this.txt_origin_cn,
+      this.txt_origin_cn,
       required this.file_download_url});
 
   factory _$_MofaNoticeModel.fromJson(Map<String, dynamic> json) =>
@@ -500,7 +500,7 @@ abstract class _MofaNoticeModel implements MofaNoticeModel {
       {required String id,
       required String title,
       required String written_dt,
-      required String? txt_origin_cn,
+      String? txt_origin_cn,
       required String file_download_url}) = _$_MofaNoticeModel;
 
   factory _MofaNoticeModel.fromJson(Map<String, dynamic> json) =

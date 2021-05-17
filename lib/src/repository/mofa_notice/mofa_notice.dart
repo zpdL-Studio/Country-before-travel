@@ -24,7 +24,7 @@ class MofaNoticeModel with _$MofaNoticeModel {
     required String id,
     required String title,
     required String written_dt,
-    required String? txt_origin_cn,
+    String? txt_origin_cn,
     required String file_download_url,
   }) = _MofaNoticeModel;
 

@@ -27,15 +27,15 @@ class MofaNoticeProvider extends GetConnect implements MofaNoticeRepository {
 
   @override
   Future<MofaNoticeResponse> getList({int pageNo = 1, int numOfRows = 100}) async {
-    final res = await get<MofaNoticeResponse>('/getNoticeList2', query: {
-      'serviceKey': _serviceKey,
-      'returnType': _returnType,
-      'numOfRows': numOfRows.toString(),
-      'pageNo': pageNo.toString(),
-    }, headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Headers': '*'
-    });
+    final res = await get<MofaNoticeResponse>(
+      '/getNoticeList2',
+      query: {
+        'serviceKey': _serviceKey,
+        'returnType': _returnType,
+        'numOfRows': numOfRows.toString(),
+        'pageNo': pageNo.toString(),
+      },
+    );
     return decodeFromResponse(res);
   }
 }
