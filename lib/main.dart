@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,8 +9,10 @@ import 'src/pages/routes.dart';
 
 // import 'package:country_before_travel/res/values.dart' as R;
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // await MobileAds.instance.initialize();
+  await Firebase.initializeApp();
 
   runApp(MyApp());
 }
