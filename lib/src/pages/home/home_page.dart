@@ -36,34 +36,39 @@ class HomePage extends GetWidget<HomeController> {
         title: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
             return SafeArea(
-              child: Container(
-                padding: const EdgeInsetsOnly(
-                    start: kToolbarHeight, end: 8, vertical: 8),
-                height: kToolbarHeight,
-                child: AppScaleButton(
-                    onTap: () {},
-                    pressScale: 0.95,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        side: BorderSide(color: theme.backgroundColor)),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                            child: Container(
-                          padding: const EdgeInsetsOnly(horizontal: 16),
-                          child: Text('검색',
-                              style: theme.backgroundColor.bodyText1),
-                        )),
-                        Padding(
-                          padding: const EdgeInsetsOnly(all: 8),
-                          child: Icon(
-                            Icons.search,
-                            color: theme.backgroundColor,
-                          ),
-                        )
-                      ],
-                    )),
+              child: Hero(
+                tag: Routes.SEARCH,
+                child: Container(
+                  padding: const EdgeInsetsOnly(
+                      start: kToolbarHeight, end: 8, vertical: 8),
+                  height: kToolbarHeight,
+                  child: AppScaleButton(
+                      onTap: () {
+                        Get.toNamed(Routes.SEARCH);
+                      },
+                      pressScale: 0.95,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          side: BorderSide(color: theme.backgroundColor)),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                              child: Container(
+                            padding: const EdgeInsetsOnly(horizontal: 16),
+                            child: Text('검색',
+                                style: theme.backgroundColor.bodyText1),
+                          )),
+                          Padding(
+                            padding: const EdgeInsetsOnly(all: 8),
+                            child: Icon(
+                              Icons.search,
+                              color: theme.backgroundColor,
+                            ),
+                          )
+                        ],
+                      )),
+                ),
               ),
             );
           },
