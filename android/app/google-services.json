@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "869469020291",
+    "project_id": "country-before-travel",
+    "storage_bucket": "country-before-travel.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:869469020291:android:6c09b7060dfa3f8f42fbb6",
+        "android_client_info": {
+          "package_name": "studio.zpdl.country_before_travel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "869469020291-qcmet17ret87qiv8u9qvr8baoqmsh3db.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3nTAvjqPCyKHgjzbvZAAQWG3vmX0l77o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "869469020291-qcmet17ret87qiv8u9qvr8baoqmsh3db.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
