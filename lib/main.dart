@@ -1,3 +1,4 @@
+import 'package:country_before_travel/src/service/service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await MobileAds.instance.initialize();
   await Firebase.initializeApp();
+  await initServices();
 
   runApp(MyApp());
 }

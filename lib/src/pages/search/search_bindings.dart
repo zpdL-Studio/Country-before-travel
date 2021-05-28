@@ -7,6 +7,6 @@ class SearchBindings extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<CountryCodeRepository>(() => MofaCountryCodeProvider());
-    Get.lazyPut(() => SearchController(countryCodeRepository: Get.find()));
+    Get.lazyPut(() => SearchController(countryCodeRepository: Get.find(), hiveService: Get.find()));
   }
 }
