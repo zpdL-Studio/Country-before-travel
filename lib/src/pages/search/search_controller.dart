@@ -1,18 +1,22 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../config/shared_preferences.dart';
 import '../../model/country_code_model.dart';
 import '../../repository/country_code/country_code_repository.dart';
+import '../../repository/country_flag/country_flag_repository.dart';
 import '../../service/hive/hive_service.dart';
 import '../../service/hive/model/recent_country_code_model.dart';
+import '../../widget/async_worker.dart';
 
-class SearchController extends GetxController {
+class SearchController extends GetxController with AsyncWorkerController {
 
   final CountryCodeRepository countryCodeRepository;
+  final CountryFlagRepository countryFlagRepository;
   final HiveService hiveService;
 
-  SearchController({required this.countryCodeRepository, required this.hiveService});
+  SearchController({required this.countryCodeRepository, required this.countryFlagRepository, required this.hiveService});
 
   final TextEditingController textEditingController = TextEditingController();
 
@@ -31,7 +35,7 @@ class SearchController extends GetxController {
   void onInit() {
     super.onInit();
 
-    _init();
+    asyncWorker(_init());
   }
 
   @override
@@ -46,7 +50,7 @@ class SearchController extends GetxController {
     textEditingController.dispose();
   }
 
-  void _init() async {
+  Future<void> _init() async {
     try {
       hiveBox = await hiveService.getBox<RecentCountryCodeModel>();
       _refreshRecent();
@@ -106,15 +110,20 @@ class SearchController extends GetxController {
     _searchedList.value = [];
   }
 
-  void search() async {
-    try {
-      final text = textEditingController.text;
-      if (_searchedText != text) {
-        var res = await countryCodeRepository.getCountyCodeList(cond: text);
-        _searchedText.value = text;
-        _searchedList.value = res.data.map((e) => RecentCountryCodeModel(code: e.country_iso_alp2, name: e.country_nm)).toList();
-      }
-    } catch(e) {}
+  void search() {
+    asyncWorker(Future(() async {
+      try {
+        final text = textEditingController.text;
+        if (_searchedText != text) {
+          var res = await countryCodeRepository.getCountyCodeList(cond: text);
+          _searchedText.value = text;
+          _searchedList.value = res.data
+              .map((e) => RecentCountryCodeModel(
+                  code: e.country_iso_alp2, name: e.country_nm))
+              .toList();
+        }
+      } catch (e) {}
+    }));
   }
 
   void selectModel(CountryCodeModel model) async {

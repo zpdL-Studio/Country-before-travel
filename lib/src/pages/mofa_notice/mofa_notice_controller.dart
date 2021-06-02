@@ -2,9 +2,10 @@ import 'package:get/get.dart';
 
 import '../../repository/mofa_notice/mofa_notice.dart';
 import '../../repository/mofa_notice/mofa_notice_repository.dart';
-import '../../widget/loadings.dart';
+import '../../widget/async_worker.dart';
 
-class MofaNoticeListController extends GetxController with LoadingController {
+
+class MofaNoticeListController extends GetxController with AsyncWorkerController {
   final MofaNoticeRepository mofaNoticeRepository;
 
   MofaNoticeListController({required this.mofaNoticeRepository});
@@ -18,7 +19,7 @@ class MofaNoticeListController extends GetxController with LoadingController {
   void onInit() {
     super.onInit();
     print('KKH MofaNoticeListController onInit');
-    loadWork(mofaNoticeRepository.getList(pageNo: _pageNo, numOfRows: 100))
+    asyncWorker(mofaNoticeRepository.getList(pageNo: _pageNo, numOfRows: 100))
         .then((value) {
       _list.value = value.data;
     });
