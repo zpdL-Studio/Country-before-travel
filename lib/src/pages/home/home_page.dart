@@ -11,9 +11,9 @@ class HomePage extends GetWidget<HomeController> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveScaffold(
-      // prefer: ResponsiveScaffoldPrefer.SUB,
+      prefer: ResponsiveScaffoldPrefer.DRAWER,
       bodyBuilder: _buildBody,
-      // subBuilder: _buildSub,
+      subBuilder: _buildSub,
       drawerBuilder: ResponsiveDrawerBuilder(
         builder: (context, type) {
           return Drawer(
@@ -44,7 +44,7 @@ class HomePage extends GetWidget<HomeController> {
                   height: kToolbarHeight,
                   child: AppScaleButton(
                       onTap: () {
-                        Get.toNamed(Routes.SEARCH);
+                        Routes.SEARCH.toNamed();
                       },
                       pressScale: 0.95,
                       shape: RoundedRectangleBorder(
@@ -154,7 +154,7 @@ class HomePage extends GetWidget<HomeController> {
                                 size: 24,
                               ),
                               R.theme.backgroundColor, onTap: () {
-                            Get.toNamed(Routes.MOFA_NOTICE_LIST);
+                            Routes.MOFA_NOTICE_LIST.toNamed();
                           })
                         ],
                       ),
@@ -189,7 +189,10 @@ class HomePage extends GetWidget<HomeController> {
               alignment: AlignmentDirectional.center,
               child: Container(
                 child: TouchWell(
-                  onTap: () {},
+                  onTap: () {
+                    // Routes.MAP.toNamed();
+                    Routes.SEARCH_PLACE.toNamed();
+                  },
                   elevation: 5,
                   shape: RoundedRectangleBorder(
                       side: BorderSide.none,
@@ -199,7 +202,7 @@ class HomePage extends GetWidget<HomeController> {
                     height: 30,
                     child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 12),
-                        child: Text('CENTER ${controller.obj}')),
+                        child: Text('GO MAP ${controller.obj}')),
                   ),
                 ),
               ),

@@ -33,6 +33,35 @@
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
+  <!-- STEP 1: ADD core Firebase JS SDK -->
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script>
+
+  <!-- STEP 1: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>
+
+  <!-- STEP 2: Initialize Firebase with configuration -->
+  <script>
+    // Your web app's Firebase configuration
+    // TODO ADD YOUR FIREBASE CONFIG
+    var firebaseConfig = {
+      apiKey: "AIzaSyDxsgOxCnTK6mr0die1c_Iu7MAlljLgY9U",
+      authDomain: "country-before-travel.firebaseapp.com",
+      projectId: "country-before-travel",
+      storageBucket: "country-before-travel.appspot.com",
+      messagingSenderId: "869469020291",
+      appId: "1:869469020291:web:a93739fad82b466342fbb6",
+      measurementId: "G-PW1XQ3MJNY"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('flutter-first-frame', function () {

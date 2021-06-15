@@ -52,8 +52,8 @@ class _MyAppState extends State<MyApp> {
       theme: themeAviary,
       darkTheme: themeAviary,
       defaultTransition: Transition.native,
-      initialRoute: Routes.HOME,
-      getPages: Routes.routes,
+      initialRoute: Routes.HOME.route,
+      getPages: Routes.values.map((e) => e.page).toList(),
     );
   }
 }
