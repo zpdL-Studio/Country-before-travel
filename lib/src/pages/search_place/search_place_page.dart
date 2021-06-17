@@ -3,12 +3,13 @@ import 'package:country_before_travel/res/values.dart' as R; // ignore: library_
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_place/google_place.dart';
 import 'package:widgets_by_zpdl/material.dart';
-import 'package:widgets_by_zpdl/material/ios_out_side_unfocus_tap.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
+import '../../service/google_place/google_place_model.dart';
 import '../../widget/async_worker.dart';
 import '../../widget/buttons.dart';
+import '../../widget/glass_container.dart';
 import 'search_place_controller.dart';
 
 class SearchPlacePage extends AsyncWorkerBuilder<SearchPlaceController> {
@@ -20,57 +21,90 @@ class SearchPlacePage extends AsyncWorkerBuilder<SearchPlaceController> {
         appBar: AppBar(
           title: _buildAppbar(context),
         ),
-        body: Obx(() {
-          final list = controller.autoCompletes.value;
+        body: Stack(
+          children: [
+            Obx(() {
+              final List<GooglePlaceSearchResult> list = controller.searchResponse.value.results;
+              return ListView.builder(
+                itemCount: list.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return SearchPlaceWidget(
+                    googlePlaceSearchResult: list[index],
+                    onTap: () {
 
-          return ListView.builder(
-            itemCount: list.length,
-            itemBuilder: (BuildContext context, int index) {
-              final item = list[index];
-              if(item is String) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                    },
+                  );
+                },
+              );
+            }),
+            Obx(() {
+              final QueryAutoComplete? queryAutoComplete = controller.autoCompletes.value;
+              final Widget child;
+              final Widget disposeChild;
+              if(queryAutoComplete != null && queryAutoComplete.predictions.isNotEmpty) {
+                final children = <Widget>[];
+                for (int i = 0; i < queryAutoComplete.predictions.length; i++) {
+                  final item = queryAutoComplete.predictions[i];
+                  children.addAll([
+                    if(i > 0)
+                      Divider(),
                     AppScaleButton(
                       onTap: () {
-                        controller.search(item);
+                        controller.searchByQuery(item);
                       },
                       pressScale: 0.97,
                       child: Padding(
-                        padding: const EdgeInsetsOnly(vertical: 16, horizontal: 16),
-                        child: Text(item, style: R.bodyText1),
+                        padding:
+                        const EdgeInsetsOnly(vertical: 8, horizontal: 16),
+                        child: Text(item, style: R.bodyText2),
                       ),
                     ),
-                    Divider()
-                  ],
+                  ]);
+                }
+
+                child = GlassContainer(
+                  key: ValueKey(queryAutoComplete.query),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsetsOnly(vertical: 8),
+                    child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: children
+                    ),
+                  ),
                 );
-              } else if(item is AutocompletePrediction) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AppScaleButton(
-                      onTap: () {
-                        // controller.search(item);
-                      },
-                      pressScale: 0.97,
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsetsOnly(vertical: 16, horizontal: 16),
-                        color: R.color.accentColor,
-                        child: Text(item.description ?? '', style: R.bodyText1),
-                      ),
-                    ),
-                    Divider()
-                  ],
+
+                disposeChild = GestureDetector(
+                  child: Container(
+                    color: Colors.transparent,
+                  ),
+                  onTap: () {
+                    controller.autoCompletes.value = null;
+                  },
                 );
               } else {
-                return Container();
+                child = Container(
+                  key: ValueKey(''),
+                );
+                disposeChild = Container();
               }
-            },
-          );
-        }),
+
+              return Column(
+                children: [
+                  AnimatedSwitcherSlide(
+                      switchInCurve: Curves.easeOutBack,
+                      switchOutCurve: Curves.easeOut,
+                      alignment: Alignment.topCenter,
+                      child: child),
+                  Expanded(child: disposeChild)
+                ],
+              );
+            }),
+          ],
+        ),
       ),
     );
   }
@@ -99,13 +133,13 @@ class SearchPlacePage extends AsyncWorkerBuilder<SearchPlaceController> {
                 controller.searchText = value;
               },
               onSubmitted: (value) {
-                controller.search(value);
+                controller.search();
               },
             ),
           ),
           AppScaleButton(
             onTap: () {
-              controller.search(controller.textEditingController.text);
+              controller.search();
             },
             pressScale: 0.90,
             shape: CircleBorder(),
@@ -123,4 +157,49 @@ class SearchPlacePage extends AsyncWorkerBuilder<SearchPlaceController> {
   }
 }
 
+class SearchPlaceWidget extends StatelessWidget {
 
+  final GooglePlaceSearchResult googlePlaceSearchResult;
+  final GestureTapCallback? onTap;
+
+  const SearchPlaceWidget({Key? key, required this.googlePlaceSearchResult, this.onTap}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final icon = googlePlaceSearchResult.icon;
+
+    return Padding(
+      padding: const EdgeInsetsOnly(top: 4, bottom: 8, horizontal: 4),
+      child: ElevationButton(
+        onTap: onTap,
+        elevation: 8,
+        color: R.color.backgroundColor,
+        child: Padding(
+          padding: const EdgeInsetsOnly(vertical: 16, horizontal: 16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              icon != null ? Container(
+                child: CachedNetworkImage(
+                  imageUrl: icon, width: 40, height: 40, fit: BoxFit.contain,),
+              ) : Container(
+                width: 40, height: 40,),
+              RowSpace(12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(googlePlaceSearchResult.name, style: R.subtitle2),
+                    ColumnSpace(4),
+                    Text(googlePlaceSearchResult.address, style: R.caption),
+                  ],
+                ),
+              ),
+            ],
+          )
+        ),
+      ),
+    );
+  }
+}

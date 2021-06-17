@@ -4,7 +4,6 @@ import 'package:country_before_travel/res/values.dart' as R; // ignore: library_
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:widgets_by_zpdl/material.dart';
-import 'package:widgets_by_zpdl/material/ios_out_side_unfocus_tap.dart';
 
 import '../../widget/async_worker.dart';
 import '../../widget/buttons.dart';
