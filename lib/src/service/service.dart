@@ -5,5 +5,5 @@ import 'hive/hive_service.dart';
 
 Future<void> initServices() async {
   await Get.putAsync(() => HiveService().init());
-  Get.put(GooglePlaceService());
+  await Get.putAsync(() => GooglePlaceService().init());
 }

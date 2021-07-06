@@ -8,10 +8,4 @@ class SearchPlaceBindings extends Bindings {
   void dependencies() {
     Get.lazyPut(() => SearchPlaceController(googlePlace: Get.find()));
   }
-
-  static GetPage getPage(String name) => GetPage(
-    name: name,
-    binding: SearchPlaceBindings(),
-    page: () => SearchPlacePage(),
-  );
 }

@@ -3,7 +3,7 @@ import 'package:google_place/google_place.dart';
 
 class QueryAutoComplete {
   final String query;
-  final List<String> predictions;
+  final List<AutocompletePrediction> predictions;
 
   QueryAutoComplete(this.query, this.predictions);
 }

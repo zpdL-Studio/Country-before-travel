@@ -1,15 +1,17 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_before_travel/res/values.dart' as R; // ignore: library_prefixes, prefer_relative_imports
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:widgets_by_zpdl/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../service/google_place/google_place_model.dart';
 import '../../widget/async_worker.dart';
 import '../../widget/buttons.dart';
 import '../../widget/glass_container.dart';
+import '../place_detail/place_detail_bindings.dart';
+import '../routes.dart';
 import 'search_place_controller.dart';
 
 class SearchPlacePage extends AsyncWorkerBuilder<SearchPlaceController> {
@@ -25,20 +27,24 @@ class SearchPlacePage extends AsyncWorkerBuilder<SearchPlaceController> {
           children: [
             Obx(() {
               final List<GooglePlaceSearchResult> list = controller.searchResponse.value.results;
+
               return ListView.builder(
                 itemCount: list.length,
                 itemBuilder: (BuildContext context, int index) {
                   return SearchPlaceWidget(
                     googlePlaceSearchResult: list[index],
-                    onTap: () {
-
+                    onTap: () async {
+                      controller.focusNode.unfocus();
+                      Routes.PLACE_DETAIL.toNamed(
+                          parameters: PlaceDetailBindings.parameters(
+                              list[index].placeId));
                     },
                   );
                 },
               );
             }),
             Obx(() {
-              final QueryAutoComplete? queryAutoComplete = controller.autoCompletes.value;
+              final QueryAutoComplete? queryAutoComplete = controller.searchTextHasFocus.value ? controller.autoCompletes.value : null;
               final Widget child;
               final Widget disposeChild;
               if(queryAutoComplete != null && queryAutoComplete.predictions.isNotEmpty) {
@@ -50,13 +56,26 @@ class SearchPlacePage extends AsyncWorkerBuilder<SearchPlaceController> {
                       Divider(),
                     AppScaleButton(
                       onTap: () {
-                        controller.searchByQuery(item);
+                        controller.searchByQuery(item.description ?? '');
                       },
                       pressScale: 0.97,
                       child: Padding(
-                        padding:
-                        const EdgeInsetsOnly(vertical: 8, horizontal: 16),
-                        child: Text(item, style: R.bodyText2),
+                        padding: const EdgeInsetsOnly(vertical: 16, horizontal: 16),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 20,
+                              height: 20,
+                              margin: const EdgeInsetsOnly(end: 8),
+                              child: Icon(
+                                item.placeId != null ? Icons.place : Icons.search,
+                                color: R.color.black,
+                                size: 20,
+                              )
+                            ),
+                            Expanded(child: Text(item.description ?? '', style: R.bodyText2)),
+                          ],
+                        ),
                       ),
                     ),
                   ]);
@@ -82,7 +101,7 @@ class SearchPlacePage extends AsyncWorkerBuilder<SearchPlaceController> {
                     color: Colors.transparent,
                   ),
                   onTap: () {
-                    controller.autoCompletes.value = null;
+                    controller.focusNode.unfocus();
                   },
                 );
               } else {
@@ -121,11 +140,11 @@ class SearchPlacePage extends AsyncWorkerBuilder<SearchPlaceController> {
           RowSpace(16),
           Expanded(
             child: TextField(
+              focusNode: controller.focusNode,
               controller: controller.textEditingController,
               keyboardType: TextInputType.text,
               textAlign: TextAlign.start,
               style: R.theme.backgroundColor.bodyText1,
-              autofocus: true,
               cursorColor: R.color.accentColor,
               decoration: InputDecoration.collapsed(
                   hintText: '검색', hintStyle: R.theme.backgroundColor.bodyText1),

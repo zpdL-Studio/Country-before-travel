@@ -46,7 +46,9 @@ abstract class AsyncWorkerBuilder<T extends AsyncWorkerController> extends GetVi
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        asyncWorkerBuilder(context),
+        GetBuilder<T>(
+          builder: (_) => asyncWorkerBuilder(context)
+        ),
         Obx(() {
           return _buildLoading(controller.loading);
         })

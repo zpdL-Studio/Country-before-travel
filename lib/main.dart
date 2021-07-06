@@ -8,8 +8,6 @@ import 'src/config/theme.dart';
 import 'src/pages/routes.dart';
 import 'src/service/service.dart';
 
-// import 'package:country_before_travel/res/values.dart' as R;
-
 void main() async {
   // await MobileAds.instance.initialize();
   await WidgetsFlutterBinding.ensureInitialized();
@@ -53,7 +51,7 @@ class _MyAppState extends State<MyApp> {
       darkTheme: themeAviary,
       defaultTransition: Transition.native,
       initialRoute: Routes.HOME.route,
-      getPages: Routes.values.map((e) => e.page).toList(),
+      getPages: routesPages,
     );
   }
 }

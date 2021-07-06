@@ -5,14 +5,19 @@ import 'package:get/get.dart';
 
 import '../../service/google_place/google_place_model.dart';
 import '../../service/google_place/google_place_service.dart';
+import '../../tools/aync_debounce_worker.dart';
 import '../../widget/async_worker.dart';
 
 class SearchPlaceController extends GetxController with AsyncWorkerController {
 
   final GooglePlaceService _googlePlace;
+  late final AsyncDebounceWorkerManager<QueryAutoComplete> _asyncDebounceWorker;
 
   SearchPlaceController({required GooglePlaceService googlePlace})
       : this._googlePlace = googlePlace;
+
+  final FocusNode focusNode = FocusNode();
+  final searchTextHasFocus = false.obs;
 
   final TextEditingController textEditingController = TextEditingController();
   final _searchText = ''.obs;
@@ -20,6 +25,8 @@ class SearchPlaceController extends GetxController with AsyncWorkerController {
 
   final autoCompletes = Rxn<QueryAutoComplete>();
   final searchResponse = Rx<GooglePlaceSearchResponse>(GooglePlaceSearchResponse.empty());
+
+
 
   // final autoComplete = RxString('');
   // static const _queryAutocompleteKey = '_queryAutocomplete';
@@ -36,7 +43,11 @@ class SearchPlaceController extends GetxController with AsyncWorkerController {
   @override
   void onInit() {
     super.onInit();
-
+    _asyncDebounceWorker = AsyncDebounceWorkerManager(onDebounce: (_) {
+      autoCompletes.value = _;
+    });
+    searchTextHasFocus.value = focusNode.hasFocus;
+    focusNode.addListener(_changedFocus);
     _init();
   }
 
@@ -48,6 +59,8 @@ class SearchPlaceController extends GetxController with AsyncWorkerController {
   @override
   void onClose() {
     super.onClose();
+    _asyncDebounceWorker.onDebounce = null;
+    focusNode.removeListener(_changedFocus);
 
     _googlePlace.recentSearch = textEditingController.text;
     _googlePlace.recentQueryAutoComplete = autoCompletes.value;
@@ -61,10 +74,14 @@ class SearchPlaceController extends GetxController with AsyncWorkerController {
     _searchText.value = recentSearch;
     autoCompletes.value = _googlePlace.recentQueryAutoComplete;
 
-    debounce<String>(_searchText, (_) async {
-      final results = await _googlePlace.queryAutocomplete(_);
-      autoCompletes.value = QueryAutoComplete(_, results);
-    }, time: Duration(milliseconds: 500));
+    _searchText.listen((_) {
+      if(_.trim().length > 1) {
+        _asyncDebounceWorker.debounceWorker(() async {
+          final results = await _googlePlace.queryAutocomplete(_);
+          return QueryAutoComplete(_, results);
+        });
+      }
+    });
   }
 
   void searchByQuery(String value) {
@@ -85,8 +102,12 @@ class SearchPlaceController extends GetxController with AsyncWorkerController {
   void _search(String value) {
     asyncWorker(Future(() async {
       final results = await _googlePlace.searchText(value);
-      autoCompletes.value = null;
+      focusNode.unfocus();
       searchResponse.value = results;
     }));
+  }
+
+  void _changedFocus() {
+    searchTextHasFocus.value = focusNode.hasFocus;
   }
 }
