@@ -191,7 +191,7 @@ class HomePage extends GetWidget<HomeController> {
                 child: TouchWell(
                   onTap: () {
                     // Routes.MAP.toNamed();
-                    Routes.SEARCH_PLACE.toNamed();
+                    Routes.PLACE_SEARCH.toNamed();
                   },
                   elevation: 5,
                   shape: RoundedRectangleBorder(

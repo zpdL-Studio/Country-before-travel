@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_before_travel/res/values.dart' as R; // ignore: library_prefixes, prefer_relative_imports
 import 'package:flutter/cupertino.dart';
@@ -12,9 +11,9 @@ import '../../widget/buttons.dart';
 import '../../widget/glass_container.dart';
 import '../place_detail/place_detail_bindings.dart';
 import '../routes.dart';
-import 'search_place_controller.dart';
+import 'place_search_controller.dart';
 
-class SearchPlacePage extends AsyncWorkerBuilder<SearchPlaceController> {
+class PlaceSearchPage extends AsyncWorkerBuilder<PlaceSearchController> {
 
   @override
   Widget asyncWorkerBuilder(BuildContext context) {

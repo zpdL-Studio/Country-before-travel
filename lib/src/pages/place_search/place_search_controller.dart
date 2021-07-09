@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,12 +6,12 @@ import '../../service/google_place/google_place_service.dart';
 import '../../tools/aync_debounce_worker.dart';
 import '../../widget/async_worker.dart';
 
-class SearchPlaceController extends GetxController with AsyncWorkerController {
+class PlaceSearchController extends GetxController with AsyncWorkerController {
 
   final GooglePlaceService _googlePlace;
   late final AsyncDebounceWorkerManager<QueryAutoComplete> _asyncDebounceWorker;
 
-  SearchPlaceController({required GooglePlaceService googlePlace})
+  PlaceSearchController({required GooglePlaceService googlePlace})
       : this._googlePlace = googlePlace;
 
   final FocusNode focusNode = FocusNode();

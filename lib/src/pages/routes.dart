@@ -1,24 +1,20 @@
 import 'package:get/get.dart';
 
 import 'home/home_bindings.dart';
-import 'home/home_page.dart';
 import 'map/map_bindings.dart';
-import 'map/map_page.dart';
 import 'mofa_notice/mofa_notice.dart';
 import 'mofa_notice/mofa_notice_list_page.dart';
 import 'place_detail/place_detail_bindings.dart';
-import 'place_detail/place_detail_page.dart';
+import 'place_search/place_search_bindings.dart';
 import 'search/search_bindings.dart';
 import 'search/search_page.dart';
-import 'search_place/search_place_bindings.dart';
-import 'search_place/search_place_page.dart';
 
 enum Routes {
   HOME,
   SEARCH,
   MOFA_NOTICE_LIST,
   MAP,
-  SEARCH_PLACE,
+  PLACE_SEARCH,
   PLACE_DETAIL,
 }
 
@@ -33,8 +29,8 @@ extension RouteExtension on Routes {
         return '/mofa_notice_list';
       case Routes.MAP:
         return '/map';
-      case Routes.SEARCH_PLACE:
-        return '/search_place';
+      case Routes.PLACE_SEARCH:
+        return '/place_search';
       case Routes.PLACE_DETAIL:
         return '/place_detail';
     }
@@ -52,42 +48,29 @@ extension RouteExtension on Routes {
         preventDuplicates: preventDuplicates,
         parameters: parameters);
   }
-}
 
-List<GetPage> get routesPages => [
-      GetPage(
-        name: Routes.HOME.route,
-        binding: HomeBindings(),
-        page: () => HomePage(),
-      ),
-      GetPage(
-        name: Routes.SEARCH.route,
-        binding: SearchBindings(),
-        page: () => SearchPage(),
-      ),
-      GetPage(
-        name: Routes.MOFA_NOTICE_LIST.route,
-        binding: MofaNoticeBindings(),
-        page: () => MofaNoticeListPage(),
-      ),
-      GetPage(
-        name: Routes.MAP.route,
-        binding: MapBindings(),
-        page: () => MapPage(),
-      ),
-      GetPage(
-        name: Routes.SEARCH_PLACE.route,
-        binding: SearchPlaceBindings(),
-        page: () => SearchPlacePage(),
-      ),
-      GetPage(
-        name: Routes.SEARCH_PLACE.route,
-        binding: SearchPlaceBindings(),
-        page: () => SearchPlacePage(),
-      ),
-      GetPage(
-          name: Routes.PLACE_DETAIL.route,
-          binding: PlaceDetailBindings(),
-          page: () => PlaceDetailPage(),
-      ),
-    ];
+  GetPage get page {
+    switch (this) {
+      case Routes.HOME:
+        return HomeBindings.getPage(route);
+      case Routes.SEARCH:
+        return GetPage(
+          name: route,
+          binding: SearchBindings(),
+          page: () => SearchPage(),
+        );
+      case Routes.MOFA_NOTICE_LIST:
+        return GetPage(
+          name: route,
+          binding: MofaNoticeBindings(),
+          page: () => MofaNoticeListPage(),
+        );
+      case Routes.MAP:
+        return MapBindings.getPage(route);
+      case Routes.PLACE_SEARCH:
+        return PlaceSearchBindings.getPage(route);
+      case Routes.PLACE_DETAIL:
+        return PlaceDetailBindings.getPage(route);
+    }
+  }
+}
