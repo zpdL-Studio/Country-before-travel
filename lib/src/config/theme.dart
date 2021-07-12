@@ -15,7 +15,7 @@ ThemeData get themeAviary {
 
   return ThemeData(
     primaryColor: R.color.ultimate_gray,
-    backgroundColor: R.color.cloud_dance,
+    backgroundColor: Colors.white,
     accentColor: R.color.illuminating,
     scaffoldBackgroundColor: R.color.cloud_dance,
     textTheme: defaultThemeData.textTheme.apply(displayColor: R.color.black.withAlpha(0x8A), bodyColor: R.color.black,),
