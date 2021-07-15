@@ -13,9 +13,17 @@ class color {
   static const white = Colors.white;
   static const black = Colors.black;
 
-  static Color get primaryColor => Get.theme.primaryColor;
-  static Color get backgroundColor => Get.theme.backgroundColor;
-  static Color get accentColor => Get.theme.accentColor;
+  static Color get primaryColor => ultimate_gray;
+  static Color get backgroundColor => cloud_dance;
+
+  static Color get foregroundColor => Colors.black;
+  static Color get foregroundColor8 => Colors.black87;
+  static Color get foregroundColor5 => Colors.black54;
+  static Color get foregroundColor3 => Colors.black38;
+  static Color get foregroundColor2 => Colors.black26;
+  static Color get foregroundColor1 => Colors.black12;
+
+  static Color get accentColor => illuminating;
 }
 
 extension ColorTextStyle on Color {

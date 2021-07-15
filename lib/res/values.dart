@@ -55,7 +55,7 @@ ElevationButton elevationIconButton(IconData icon,
 }
 
 abstract class shape {
-  static ShapeBorder rect({double radius = 10, Color? color, double width = 1.0}) {
+  static ShapeBorder rect({double radius = 8, Color? color, double width = 1.0}) {
     return RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(radius),
         side: color != null
@@ -70,3 +70,5 @@ abstract class shape {
             : BorderSide.none);
   }
 }
+
+double get hPadding => 16;

@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp> {
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.dark,
         statusBarBrightness: Brightness.dark,
-        systemNavigationBarColor: Colors.white,
+        systemNavigationBarColor: themeAviary.backgroundColor,
         systemNavigationBarIconBrightness: Brightness.dark,
       ));
     } else if(defaultTargetPlatform == TargetPlatform.iOS) {
@@ -50,7 +50,7 @@ class _MyAppState extends State<MyApp> {
       theme: themeAviary,
       darkTheme: themeAviary,
       defaultTransition: Transition.native,
-      initialRoute: Routes.HOME.route,
+      initialRoute: Routes.HOME.name,
       getPages: Routes.values.map((e) => e.page).toList(),
     );
   }

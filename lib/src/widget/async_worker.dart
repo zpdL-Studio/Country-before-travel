@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:widgets_by_zpdl/material.dart';
 
+import 'dialog.dart';
+
 mixin AsyncWorkerController on GetxController {
   final _loading = false.obs;
   int _loadingCount = 0;
@@ -35,6 +37,18 @@ mixin AsyncWorkerController on GetxController {
     } finally {
       hideLoading();
     }
+  }
+
+  Future<T?> asyncWorkerWithError<T>(Future<T> worker, {bool Function(Object e)? onError}) async {
+    try {
+      return await asyncWorker(worker);
+    } catch(e) {
+      bool processError = onError != null ? onError(e) : false;
+      if(!processError) {
+        showDefaultErrorDialog(e);
+      }
+    }
+    return null;
   }
 }
 
