@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:widgets_by_zpdl/material.dart';
 
 import 'images.dart';
+import 'localization.dart';
 
 export 'colors.dart';
 export 'images.dart';
@@ -16,6 +17,8 @@ extension ImagesWidget on images {
     );
   }
 }
+
+AppLocalizationsData get string => appLocalization;
 
 ThemeData get theme => Get.theme;
 

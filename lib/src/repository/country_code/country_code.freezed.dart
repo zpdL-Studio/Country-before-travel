@@ -171,9 +171,8 @@ class __$CountryCodeResponseCopyWithImpl<$Res>
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$_CountryCodeResponse implements _CountryCodeResponse {
   _$_CountryCodeResponse(
       {required this.totalCount,
@@ -427,9 +426,8 @@ class __$CountryCodeModelCopyWithImpl<$Res>
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$_CountryCodeModel implements _CountryCodeModel {
   _$_CountryCodeModel(
       {required this.country_eng_nm,

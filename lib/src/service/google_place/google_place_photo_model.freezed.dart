@@ -136,9 +136,8 @@ class __$GooglePlacePhotoModelCopyWithImpl<$Res>
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$_GooglePlacePhotoModel implements _GooglePlacePhotoModel {
   _$_GooglePlacePhotoModel(
       {required this.photoReference,

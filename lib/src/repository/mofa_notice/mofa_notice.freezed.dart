@@ -171,9 +171,8 @@ class __$MofaNoticeResponseCopyWithImpl<$Res>
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$_MofaNoticeResponse implements _MofaNoticeResponse {
   _$_MofaNoticeResponse(
       {required this.totalCount,
@@ -426,9 +425,8 @@ class __$MofaNoticeModelCopyWithImpl<$Res>
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$_MofaNoticeModel implements _MofaNoticeModel {
   _$_MofaNoticeModel(
       {required this.id,

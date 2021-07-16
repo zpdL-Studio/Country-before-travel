@@ -1,9 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 
+import 'res/localization.dart';
 import 'src/config/theme.dart';
 import 'src/pages/routes.dart';
 import 'src/service/service.dart';
@@ -52,6 +55,15 @@ class _MyAppState extends State<MyApp> {
       defaultTransition: Transition.native,
       initialRoute: Routes.HOME.name,
       getPages: Routes.values.map((e) => e.page).toList(),
+      locale: localizedLabels.keys.first,
+      supportedLocales: localizedLabels.keys.toList(),
+      localizationsDelegates: [
+        const AppLocalizationsDelegate(), // <- Your custom delegate
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate
+      ],
     );
   }
 }

@@ -171,9 +171,8 @@ class __$CountryFlagResponseCopyWithImpl<$Res>
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$_CountryFlagResponse implements _CountryFlagResponse {
   _$_CountryFlagResponse(
       {required this.totalCount,
@@ -412,9 +411,8 @@ class __$CountryFlagModelCopyWithImpl<$Res>
   }
 }
 
-@JsonSerializable()
-
 /// @nodoc
+@JsonSerializable()
 class _$_CountryFlagModel implements _CountryFlagModel {
   _$_CountryFlagModel(
       {required this.country_eng_nm,
