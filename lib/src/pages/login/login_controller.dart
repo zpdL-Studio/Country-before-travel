@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 import '../../service/auth/auth_service.dart';
@@ -7,9 +8,11 @@ import 'login_contract.dart';
 class LoginController extends GetxController with AsyncWorkerController {
 
   final AuthService authService;
-  LoginRouteArguments? _loginRouteArguments;
 
   LoginController({required this.authService});
+
+  LoginRouteArguments? _loginRouteArguments;
+  List<SocialLoginType> socialLoginTypes = [];
 
   @override
   void onInit() {
@@ -19,6 +22,8 @@ class LoginController extends GetxController with AsyncWorkerController {
     if(arguments is LoginRouteArguments) {
       _loginRouteArguments = arguments;
     }
+
+    socialLoginTypes = SocialLoginType.values.toList();
   }
 
   @override
@@ -32,22 +37,28 @@ class LoginController extends GetxController with AsyncWorkerController {
   }
 
   void singIn(SocialLoginType type) async {
+    User? result;
+
     switch(type) {
       case SocialLoginType.GOOGLE:
-        final result = await asyncWorkerWithError(authService.signInWithGoogle());
-        if(result != null) {
-          final loginRouteArguments = _loginRouteArguments;
-          if(loginRouteArguments != null) {
-            Get.offNamed(loginRouteArguments.name,
-                arguments: loginRouteArguments.arguments,
-                id: loginRouteArguments.id,
-                preventDuplicates: loginRouteArguments.preventDuplicates,
-                parameters: loginRouteArguments.parameters);
-          } else {
-            Get.back(result: true);
-          }
-        }
+        result = await asyncWorkerNullable(authService.signInWithGoogle());
         break;
+      case SocialLoginType.ANONYMOUSLY:
+        result = await asyncWorkerNullable(authService.signInAnonymously());
+        break;
+    }
+
+    if(result != null) {
+      final loginRouteArguments = _loginRouteArguments;
+      if(loginRouteArguments != null) {
+        Get.offNamed(loginRouteArguments.name,
+            arguments: loginRouteArguments.arguments,
+            id: loginRouteArguments.id,
+            preventDuplicates: loginRouteArguments.preventDuplicates,
+            parameters: loginRouteArguments.parameters);
+      } else {
+        Get.back(result: true);
+      }
     }
   }
 }

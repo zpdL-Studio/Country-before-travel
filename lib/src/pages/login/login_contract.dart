@@ -2,6 +2,7 @@
 
 enum SocialLoginType {
   GOOGLE,
+  ANONYMOUSLY,
 }
 
 class LoginRouteArguments {

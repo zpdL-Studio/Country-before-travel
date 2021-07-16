@@ -34,8 +34,7 @@ class AuthService extends GetxService {
       } else {
         final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
         if(googleUser != null) {
-          final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+          final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
           final googleAuthCredential = GoogleAuthProvider.credential(
             accessToken: googleAuth.accessToken,
             idToken: googleAuth.idToken,
@@ -47,6 +46,16 @@ class AuthService extends GetxService {
       return userCredential?.user;
     } catch (e) {
       Log.e('signInWithGoogle error : $e');
+      rethrow;
+    }
+  }
+
+  Future<User?> signInAnonymously() async {
+    try {
+      final userCredential = await _fireBaseAuth.signInAnonymously();
+      return userCredential.user;
+    } catch (e) {
+      Log.e('_signInAnonymously error : $e');
       rethrow;
     }
   }

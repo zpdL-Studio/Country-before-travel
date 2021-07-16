@@ -14,9 +14,22 @@ class LoginPage extends AsyncWorkerBuilder<LoginController> {
 
   @override
   Widget asyncWorkerBuilder(BuildContext context) {
+    final signIn = controller.socialLoginTypes.map((e) {
+      switch(e) {
+        case SocialLoginType.GOOGLE:
+          return _SignInButton(type: SocialLoginType.GOOGLE, onTap: () {
+            controller.singIn(SocialLoginType.GOOGLE);
+          },);
+        case SocialLoginType.ANONYMOUSLY:
+          return _SignInButton(type: SocialLoginType.ANONYMOUSLY, onTap: () {
+            controller.singIn(SocialLoginType.ANONYMOUSLY);
+          },);
+      }
+    });
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text(R.string.auth.login),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -24,9 +37,7 @@ class LoginPage extends AsyncWorkerBuilder<LoginController> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Spacer(flex: 3),
-            _SignInButton(type: SocialLoginType.GOOGLE, onTap: () {
-              controller.singIn(SocialLoginType.GOOGLE);
-            },),
+            ...signIn,
             ColumnSpace(24),
           ],
         ),
@@ -43,7 +54,7 @@ class _SignInButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AssetImage image;
+    final AssetImage? image;
     final Color backgroundColor;
     final Color textColor;
     final String text;
@@ -52,7 +63,13 @@ class _SignInButton extends StatelessWidget {
         image = AssetImage('assets/logos/google_dark.png', package: 'flutter_signin_button');
         backgroundColor = Color(0xFF4285F4);
         textColor = Color(0xFFFFFFFF);
-        text = 'Sign in with Google';
+        text = 'Google';
+        break;
+      case SocialLoginType.ANONYMOUSLY:
+        image = null;
+        backgroundColor = R.color.backgroundColor;
+        textColor = R.color.foregroundColor5;
+        text = R.string.auth.anonymously;
         break;
     }
 
@@ -68,7 +85,8 @@ class _SignInButton extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image(image: image, width: 36, height: 36,),
+              if(image != null)
+                Image(image: image, width: 36, height: 36,),
               Spacer(),
               Text(
                 text, style: textColor.subtitle1,

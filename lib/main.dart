@@ -55,7 +55,17 @@ class _MyAppState extends State<MyApp> {
       defaultTransition: Transition.native,
       initialRoute: Routes.HOME.name,
       getPages: Routes.values.map((e) => e.page).toList(),
-      locale: localizedLabels.keys.first,
+      localeResolutionCallback: (locale, supportedLocales) {
+        if(locale == null) {
+          return null;
+        }
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale.languageCode) {
+            return supportedLocale;
+          }
+        }
+        return supportedLocales.first;
+      },
       supportedLocales: localizedLabels.keys.toList(),
       localizationsDelegates: [
         const AppLocalizationsDelegate(), // <- Your custom delegate

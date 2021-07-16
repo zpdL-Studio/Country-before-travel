@@ -41,7 +41,19 @@ mixin AsyncWorkerController on GetxController {
     }
   }
 
-  Future<T?> asyncWorkerWithError<T>(Future<T> worker, {bool Function(Object e)? onError}) async {
+  Future<T?> asyncWorkerNotnull<T>(Future<T> worker, {bool Function(Object e)? onError}) async {
+    try {
+      return await asyncWorker(worker);
+    } catch(e) {
+      bool processError = onError != null ? onError(e) : false;
+      if(!processError) {
+        showDefaultErrorDialog(e);
+      }
+    }
+    return null;
+  }
+
+  Future<T?> asyncWorkerNullable<T>(Future<T?> worker, {bool Function(Object e)? onError}) async {
     try {
       return await asyncWorker(worker);
     } catch(e) {

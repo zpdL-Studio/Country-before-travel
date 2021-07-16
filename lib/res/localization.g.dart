@@ -15,6 +15,11 @@ final localizedLabels = <Locale, AppLocalizationsData>{
     closeLow: 'close',
     close: 'Close',
     multiline: 'This is\n\na\n\nmultiline example.',
+    auth: const AppLocalizationsDataAuth(
+      signInWithGoogle: 'Sign in with Google',
+      anonymously: 'Anonymously',
+      login: 'Login',
+    ),
     plurals: const AppLocalizationsDataPlurals(
       manMultiple: 'men',
       manOne: 'man',
@@ -60,6 +65,11 @@ final localizedLabels = <Locale, AppLocalizationsData>{
     closeLow: '닫기',
     close: '닫기',
     multiline: 'This is\n\na\n\nmultiline example.',
+    auth: const AppLocalizationsDataAuth(
+      signInWithGoogle: 'Google 로그인',
+      anonymously: '익명',
+      login: '로그인',
+    ),
     plurals: const AppLocalizationsDataPlurals(
       manMultiple: '남자',
       manOne: '남자',
@@ -117,6 +127,7 @@ class AppLocalizationsData {
     required this.closeLow,
     required this.close,
     required this.multiline,
+    required this.auth,
     required this.plurals,
     required this.templated,
     required this.dates,
@@ -129,6 +140,7 @@ class AppLocalizationsData {
   final String closeLow;
   final String close;
   final String multiline;
+  final AppLocalizationsDataAuth auth;
   final AppLocalizationsDataPlurals plurals;
   final AppLocalizationsDataTemplated templated;
   final AppLocalizationsDataDates dates;
@@ -141,6 +153,8 @@ class AppLocalizationsData {
         closeLow: map['closeLow']! as String,
         close: map['close']! as String,
         multiline: map['multiline']! as String,
+        auth: AppLocalizationsDataAuth.fromJson(
+            map['auth']! as Map<String, Object?>),
         plurals: AppLocalizationsDataPlurals.fromJson(
             map['plurals']! as Map<String, Object?>),
         templated: AppLocalizationsDataTemplated.fromJson(
@@ -157,6 +171,7 @@ class AppLocalizationsData {
     String? closeLow,
     String? close,
     String? multiline,
+    AppLocalizationsDataAuth? auth,
     AppLocalizationsDataPlurals? plurals,
     AppLocalizationsDataTemplated? templated,
     AppLocalizationsDataDates? dates,
@@ -169,6 +184,7 @@ class AppLocalizationsData {
         closeLow: closeLow ?? this.closeLow,
         close: close ?? this.close,
         multiline: multiline ?? this.multiline,
+        auth: auth ?? this.auth,
         plurals: plurals ?? this.plurals,
         templated: templated ?? this.templated,
         dates: dates ?? this.dates,
@@ -185,6 +201,7 @@ class AppLocalizationsData {
           closeLow == other.closeLow &&
           close == other.close &&
           multiline == other.multiline &&
+          auth == other.auth &&
           plurals == other.plurals &&
           templated == other.templated &&
           dates == other.dates);
@@ -198,9 +215,53 @@ class AppLocalizationsData {
       closeLow.hashCode ^
       close.hashCode ^
       multiline.hashCode ^
+      auth.hashCode ^
       plurals.hashCode ^
       templated.hashCode ^
       dates.hashCode;
+}
+
+class AppLocalizationsDataAuth {
+  const AppLocalizationsDataAuth({
+    required this.signInWithGoogle,
+    required this.anonymously,
+    required this.login,
+  });
+
+  final String signInWithGoogle;
+  final String anonymously;
+  final String login;
+  factory AppLocalizationsDataAuth.fromJson(Map<String, Object?> map) =>
+      AppLocalizationsDataAuth(
+        signInWithGoogle: map['signInWithGoogle']! as String,
+        anonymously: map['anonymously']! as String,
+        login: map['login']! as String,
+      );
+
+  AppLocalizationsDataAuth copyWith({
+    String? signInWithGoogle,
+    String? anonymously,
+    String? login,
+  }) =>
+      AppLocalizationsDataAuth(
+        signInWithGoogle: signInWithGoogle ?? this.signInWithGoogle,
+        anonymously: anonymously ?? this.anonymously,
+        login: login ?? this.login,
+      );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AppLocalizationsDataAuth &&
+          signInWithGoogle == other.signInWithGoogle &&
+          anonymously == other.anonymously &&
+          login == other.login);
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      signInWithGoogle.hashCode ^
+      anonymously.hashCode ^
+      login.hashCode;
 }
 
 class AppLocalizationsDataPlurals {
