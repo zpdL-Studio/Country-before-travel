@@ -7,46 +7,13 @@ part of 'localization.dart';
 // **************************************************************************
 
 final localizedLabels = <Locale, AppLocalizationsData>{
-  Locale.fromSubtags(languageCode: 'fr'): const AppLocalizationsData(
-    multiline: 'C\'est\n\nune\n\nExemple multiligne.',
-    plurals: const AppLocalizationsDataPlurals(
-      manMultiple: 'hommes',
-      manOne: 'homme',
-      manZero: 'hommes',
-    ),
-    templated: const AppLocalizationsDataTemplated(
-      contactFemale: 'Mme {{last_name}}',
-      contactMale: 'M. {{last_name}}',
-      hello: 'Bonjour {{first_name}}!',
-      date: const AppLocalizationsDataTemplatedDate(
-        pattern: 'Aujourd\'hui : {{date:DateTime[EEE, M/d/y]}}',
-        simple: 'Aujourd\'hui : {{date:DateTime}}',
-      ),
-      numbers: const AppLocalizationsDataTemplatedNumbers(
-        formatted: 'Le prix est de {{price:double[compactCurrency]}}',
-        simple: 'Le prix est de {{price:double}}€',
-        count: 'Il y a {{count:int}} éléments.',
-      ),
-    ),
-    dates: const AppLocalizationsDataDates(
-      month: const AppLocalizationsDataDatesMonth(
-        april: 'avril',
-        march: 'février',
-        february: 'février',
-        january: 'janvier',
-      ),
-      weekday: const AppLocalizationsDataDatesWeekday(
-        sunday: 'dimanche',
-        saturday: 'samedi',
-        friday: 'Vendredi',
-        thursday: 'jeudi',
-        wednesday: 'Mercredi',
-        tuesday: 'Mardi',
-        monday: 'LUNDI',
-      ),
-    ),
-  ),
   Locale.fromSubtags(languageCode: 'en'): const AppLocalizationsData(
+    okLow: 'ok',
+    ok: 'Ok',
+    cancelLow: 'cancel',
+    cancel: 'Cancel',
+    closeLow: 'close',
+    close: 'Close',
     multiline: 'This is\n\na\n\nmultiline example.',
     plurals: const AppLocalizationsDataPlurals(
       manMultiple: 'men',
@@ -85,43 +52,48 @@ final localizedLabels = <Locale, AppLocalizationsData>{
       ),
     ),
   ),
-  Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'):
-      const AppLocalizationsData(
-    multiline: '这是\n\n一种\n\n多行示例。',
+  Locale.fromSubtags(languageCode: 'ko'): const AppLocalizationsData(
+    okLow: '확인',
+    ok: '확인',
+    cancelLow: '취소',
+    cancel: '취소',
+    closeLow: '닫기',
+    close: '닫기',
+    multiline: 'This is\n\na\n\nmultiline example.',
     plurals: const AppLocalizationsDataPlurals(
-      manMultiple: '男人',
-      manOne: '男人',
-      manZero: '男人',
+      manMultiple: '남자',
+      manOne: '남자',
+      manZero: '남자',
     ),
     templated: const AppLocalizationsDataTemplated(
-      contactFemale: '夫人{{last_name}}',
-      contactMale: '先生{{last_name}}',
-      hello: '你好{{first_name}}!',
+      contactFemale: '{{last_name}}!',
+      contactMale: '{{last_name}}!',
+      hello: '안녕 {{first_name}}!',
       date: const AppLocalizationsDataTemplatedDate(
-        pattern: '今日 : {{date:DateTime[EEE, M/d/y]}}',
-        simple: '今日 : {{date:DateTime}}',
+        pattern: '오늘 : {{date:DateTime[EEE, M/d/y]}}',
+        simple: '오늘 : {{date:DateTime}}',
       ),
       numbers: const AppLocalizationsDataTemplatedNumbers(
-        formatted: '価格は{{price:double[compactCurrency]}}です',
-        simple: '価格は{{price:double}}¥です',
-        count: '{{count:int}}個のアイテムがあります',
+        formatted: '가격은 {{price:double[compactCurrency]}}입니다.',
+        simple: '가격은 {{price:double}}원입니다.',
+        count: '{{count:int}}\ 개입니다..',
       ),
     ),
     dates: const AppLocalizationsDataDates(
       month: const AppLocalizationsDataDatesMonth(
-        april: '四月',
-        march: '游行',
-        february: '二月',
-        january: '一月',
+        april: '4월',
+        march: '3월',
+        february: '2월',
+        january: '1월',
       ),
       weekday: const AppLocalizationsDataDatesWeekday(
-        sunday: '星期日',
-        saturday: '星期六',
-        friday: '星期五',
-        thursday: '星期四',
-        wednesday: '星期三',
-        tuesday: '星期二',
-        monday: '星期一',
+        sunday: '일요일',
+        saturday: '토요일',
+        friday: '금요일',
+        thursday: '목요일',
+        wednesday: '수요일',
+        tuesday: '화요일',
+        monday: '월요일',
       ),
     ),
   ),
@@ -138,18 +110,36 @@ enum Gender {
 
 class AppLocalizationsData {
   const AppLocalizationsData({
+    required this.okLow,
+    required this.ok,
+    required this.cancelLow,
+    required this.cancel,
+    required this.closeLow,
+    required this.close,
     required this.multiline,
     required this.plurals,
     required this.templated,
     required this.dates,
   });
 
+  final String okLow;
+  final String ok;
+  final String cancelLow;
+  final String cancel;
+  final String closeLow;
+  final String close;
   final String multiline;
   final AppLocalizationsDataPlurals plurals;
   final AppLocalizationsDataTemplated templated;
   final AppLocalizationsDataDates dates;
   factory AppLocalizationsData.fromJson(Map<String, Object?> map) =>
       AppLocalizationsData(
+        okLow: map['okLow']! as String,
+        ok: map['ok']! as String,
+        cancelLow: map['cancelLow']! as String,
+        cancel: map['cancel']! as String,
+        closeLow: map['closeLow']! as String,
+        close: map['close']! as String,
         multiline: map['multiline']! as String,
         plurals: AppLocalizationsDataPlurals.fromJson(
             map['plurals']! as Map<String, Object?>),
@@ -160,12 +150,24 @@ class AppLocalizationsData {
       );
 
   AppLocalizationsData copyWith({
+    String? okLow,
+    String? ok,
+    String? cancelLow,
+    String? cancel,
+    String? closeLow,
+    String? close,
     String? multiline,
     AppLocalizationsDataPlurals? plurals,
     AppLocalizationsDataTemplated? templated,
     AppLocalizationsDataDates? dates,
   }) =>
       AppLocalizationsData(
+        okLow: okLow ?? this.okLow,
+        ok: ok ?? this.ok,
+        cancelLow: cancelLow ?? this.cancelLow,
+        cancel: cancel ?? this.cancel,
+        closeLow: closeLow ?? this.closeLow,
+        close: close ?? this.close,
         multiline: multiline ?? this.multiline,
         plurals: plurals ?? this.plurals,
         templated: templated ?? this.templated,
@@ -176,6 +178,12 @@ class AppLocalizationsData {
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is AppLocalizationsData &&
+          okLow == other.okLow &&
+          ok == other.ok &&
+          cancelLow == other.cancelLow &&
+          cancel == other.cancel &&
+          closeLow == other.closeLow &&
+          close == other.close &&
           multiline == other.multiline &&
           plurals == other.plurals &&
           templated == other.templated &&
@@ -183,6 +191,12 @@ class AppLocalizationsData {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
+      okLow.hashCode ^
+      ok.hashCode ^
+      cancelLow.hashCode ^
+      cancel.hashCode ^
+      closeLow.hashCode ^
+      close.hashCode ^
       multiline.hashCode ^
       plurals.hashCode ^
       templated.hashCode ^

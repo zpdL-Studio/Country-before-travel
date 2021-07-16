@@ -103,7 +103,7 @@ Future<bool?> showDefaultErrorDialog(Object error) {
   final List<SimpleDialogButton<bool>> buttons = [
     SimpleDialogButton.cancel(
       data: false,
-      text: 'Close'
+      text: R.string.close
     ),
   ];
 
@@ -173,7 +173,7 @@ class SimpleDialogButton<T> {
     return SimpleDialogButton.text<T>(
         data: data,
         backgroundColor: R.color.backgroundColor,
-        text: text ?? 'Cancel',
+        text: text ?? R.string.cancel,
         textStyle: R.color.foregroundColor5.bodyText1,
     );
   }
@@ -182,7 +182,7 @@ class SimpleDialogButton<T> {
     return SimpleDialogButton.text<T>(
       data: data,
       backgroundColor: R.color.accentColor,
-      text: text ?? 'Ok',
+      text: text ?? R.string.ok,
       textStyle: R.color.foregroundColor8.bodyText1,
     );
   }

@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:widgets_by_zpdl/material.dart';
 
-import 'dialog.dart';
+import 'app_dialog.dart';
+
+
 
 mixin AsyncWorkerController on GetxController {
   final _loading = false.obs;
