@@ -1,4 +1,3 @@
-import 'package:country_before_travel/src/pages/trip_planner/trip_planner_bindings.dart';
 import 'package:get/get.dart';
 
 import '../service/auth/auth_service.dart';
@@ -12,6 +11,7 @@ import 'place_detail/place_detail_bindings.dart';
 import 'place_search/place_search_bindings.dart';
 import 'search/search_bindings.dart';
 import 'search/search_page.dart';
+import 'trip_planner/trip_planner_bindings.dart';
 
 enum Routes {
   HOME,

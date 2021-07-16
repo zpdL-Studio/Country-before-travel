@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 
 import '../repository_connect.dart';
 import 'mofa_notice.dart';

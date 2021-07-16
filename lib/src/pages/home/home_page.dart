@@ -1,13 +1,10 @@
 import 'package:country_before_travel/res/values.dart' as R; // ignore: library_prefixes, prefer_relative_imports
-import 'package:country_before_travel/src/widget/dialog.dart';
 import 'package:get/get.dart';
 import 'package:widgets_by_zpdl/material.dart';
 
 import '../../widget/buttons.dart';
 import '../routes.dart';
 import 'home_controller.dart';
-import '../../../res/localization.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 class HomePage extends GetWidget<HomeController> {
   @override
@@ -150,9 +147,9 @@ class HomePage extends GetWidget<HomeController> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add, color: R.color.primaryColor,),
         onPressed: () async {
-          // Routes.TRIP_PLANNER.toNamedWithLogin();
+          Routes.TRIP_PLANNER.toNamedWithLogin();
 
-          showSimpleTextDialog(title: R.string.plurals.man(plural: Plural.one), body: R.string.multiline);
+          // showSimpleTextDialog(title: R.string.plurals.man(plural: Plural.one), body: R.string.multiline);
         },
       ),
     );
