@@ -16,7 +16,6 @@ final localizedLabels = <Locale, AppLocalizationsData>{
     close: 'Close',
     multiline: 'This is\n\na\n\nmultiline example.',
     auth: const AppLocalizationsDataAuth(
-      signInWithGoogle: 'Sign in with Google',
       anonymously: 'Anonymously',
       login: 'Login',
     ),
@@ -66,7 +65,6 @@ final localizedLabels = <Locale, AppLocalizationsData>{
     close: '닫기',
     multiline: 'This is\n\na\n\nmultiline example.',
     auth: const AppLocalizationsDataAuth(
-      signInWithGoogle: 'Google 로그인',
       anonymously: '익명',
       login: '로그인',
     ),
@@ -223,28 +221,23 @@ class AppLocalizationsData {
 
 class AppLocalizationsDataAuth {
   const AppLocalizationsDataAuth({
-    required this.signInWithGoogle,
     required this.anonymously,
     required this.login,
   });
 
-  final String signInWithGoogle;
   final String anonymously;
   final String login;
   factory AppLocalizationsDataAuth.fromJson(Map<String, Object?> map) =>
       AppLocalizationsDataAuth(
-        signInWithGoogle: map['signInWithGoogle']! as String,
         anonymously: map['anonymously']! as String,
         login: map['login']! as String,
       );
 
   AppLocalizationsDataAuth copyWith({
-    String? signInWithGoogle,
     String? anonymously,
     String? login,
   }) =>
       AppLocalizationsDataAuth(
-        signInWithGoogle: signInWithGoogle ?? this.signInWithGoogle,
         anonymously: anonymously ?? this.anonymously,
         login: login ?? this.login,
       );
@@ -253,15 +246,11 @@ class AppLocalizationsDataAuth {
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is AppLocalizationsDataAuth &&
-          signInWithGoogle == other.signInWithGoogle &&
           anonymously == other.anonymously &&
           login == other.login);
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      signInWithGoogle.hashCode ^
-      anonymously.hashCode ^
-      login.hashCode;
+      runtimeType.hashCode ^ anonymously.hashCode ^ login.hashCode;
 }
 
 class AppLocalizationsDataPlurals {

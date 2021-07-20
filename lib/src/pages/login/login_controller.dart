@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 import '../../service/auth/auth_service.dart';
@@ -37,7 +36,7 @@ class LoginController extends GetxController with AsyncWorkerController {
   }
 
   void singIn(SocialLoginType type) async {
-    User? result;
+    AuthModel? result;
 
     switch(type) {
       case SocialLoginType.GOOGLE:

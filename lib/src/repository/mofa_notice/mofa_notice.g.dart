@@ -26,7 +26,7 @@ Map<String, dynamic> _$_$_MofaNoticeResponseToJson(
       'currentCount': instance.currentCount,
       'numOfRows': instance.numOfRows,
       'pageNo': instance.pageNo,
-      'data': instance.data,
+      'data': instance.data.map((e) => e.toJson()).toList(),
     };
 
 _$_MofaNoticeModel _$_$_MofaNoticeModelFromJson(Map<String, dynamic> json) {
@@ -39,11 +39,20 @@ _$_MofaNoticeModel _$_$_MofaNoticeModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$_$_MofaNoticeModelToJson(_$_MofaNoticeModel instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'title': instance.title,
-      'written_dt': instance.written_dt,
-      'txt_origin_cn': instance.txt_origin_cn,
-      'file_download_url': instance.file_download_url,
-    };
+Map<String, dynamic> _$_$_MofaNoticeModelToJson(_$_MofaNoticeModel instance) {
+  final val = <String, dynamic>{
+    'id': instance.id,
+    'title': instance.title,
+    'written_dt': instance.written_dt,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('txt_origin_cn', instance.txt_origin_cn);
+  val['file_download_url'] = instance.file_download_url;
+  return val;
+}

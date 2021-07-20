@@ -26,7 +26,7 @@ Map<String, dynamic> _$_$_CountryFlagResponseToJson(
       'currentCount': instance.currentCount,
       'numOfRows': instance.numOfRows,
       'pageNo': instance.pageNo,
-      'data': instance.data,
+      'data': instance.data.map((e) => e.toJson()).toList(),
     };
 
 _$_CountryFlagModel _$_$_CountryFlagModelFromJson(Map<String, dynamic> json) {

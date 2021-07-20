@@ -26,7 +26,7 @@ Map<String, dynamic> _$_$_CountryCodeResponseToJson(
       'currentCount': instance.currentCount,
       'numOfRows': instance.numOfRows,
       'pageNo': instance.pageNo,
-      'data': instance.data,
+      'data': instance.data.map((e) => e.toJson()).toList(),
     };
 
 _$_CountryCodeModel _$_$_CountryCodeModelFromJson(Map<String, dynamic> json) {
@@ -39,12 +39,20 @@ _$_CountryCodeModel _$_$_CountryCodeModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$_$_CountryCodeModelToJson(
-        _$_CountryCodeModel instance) =>
-    <String, dynamic>{
-      'country_eng_nm': instance.country_eng_nm,
-      'country_nm': instance.country_nm,
-      'country_iso_alp2': instance.country_iso_alp2,
-      'iso_alp3': instance.iso_alp3,
-      'iso_num': instance.iso_num,
-    };
+Map<String, dynamic> _$_$_CountryCodeModelToJson(_$_CountryCodeModel instance) {
+  final val = <String, dynamic>{
+    'country_eng_nm': instance.country_eng_nm,
+    'country_nm': instance.country_nm,
+    'country_iso_alp2': instance.country_iso_alp2,
+    'iso_alp3': instance.iso_alp3,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('iso_num', instance.iso_num);
+  return val;
+}

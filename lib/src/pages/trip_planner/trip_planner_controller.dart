@@ -10,7 +10,7 @@ class TripPlannerController extends GetxController with AsyncWorkerController {
 
   TripPlannerController();
 
-  final PageController photoController = PageController();
+  final PageController pageController = PageController();
 
   @override
   void onInit() {
