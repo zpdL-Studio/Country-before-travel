@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:widgets_by_zpdl/material.dart';
 
 import '../../widget/async_worker.dart';
+import 'trip_planner_bindings.dart';
 import 'trip_planner_controller.dart';
 
 class TripPlannerPage extends AsyncWorkerBuilder<TripPlannerController> {
@@ -29,6 +30,12 @@ class TripPlannerPage extends AsyncWorkerBuilder<TripPlannerController> {
             itemCount: 1,
             // onPageChanged: onPageChanged,
           )),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add, color: R.color.primaryColor,),
+        onPressed: () async {
+          final result = TripPlannerBindings.toSearch();
+        },
+      ),
     );
   }
 

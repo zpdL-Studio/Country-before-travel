@@ -5,13 +5,14 @@ import '../../service/google_place/google_place_model.dart';
 import '../../service/google_place/google_place_service.dart';
 import '../../tools/aync_debounce_worker.dart';
 import '../../widget/async_worker.dart';
+import 'place_search_contract.dart';
 
 class PlaceSearchController extends GetxController with AsyncWorkerController {
-
+  final Mode mode;
   final GooglePlaceService _googlePlace;
   late final AsyncDebounceWorkerManager<QueryAutoComplete> _asyncDebounceWorker;
 
-  PlaceSearchController({required GooglePlaceService googlePlace})
+  PlaceSearchController(this.mode, {required GooglePlaceService googlePlace})
       : this._googlePlace = googlePlace;
 
   final FocusNode focusNode = FocusNode();

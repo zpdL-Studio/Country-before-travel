@@ -9,8 +9,7 @@ import '../../service/google_place/google_place_model.dart';
 import '../../widget/async_worker.dart';
 import '../../widget/buttons.dart';
 import '../../widget/glass_container.dart';
-import '../place_detail/place_detail_bindings.dart';
-import '../routes.dart';
+import 'place_search_bindings.dart';
 import 'place_search_controller.dart';
 
 class PlaceSearchPage extends AsyncWorkerBuilder<PlaceSearchController> {
@@ -34,9 +33,7 @@ class PlaceSearchPage extends AsyncWorkerBuilder<PlaceSearchController> {
                     googlePlaceSearchResult: list[index],
                     onTap: () async {
                       controller.focusNode.unfocus();
-                      Routes.PLACE_DETAIL.toNamed(
-                          parameters: PlaceDetailBindings.parameters(
-                              list[index].placeId));
+                      final results = await PlaceSearchBindings.toDetail(list[index].placeId);
                     },
                   );
                 },

@@ -3,9 +3,6 @@ import 'package:get/get.dart';
 
 import '../../widget/async_worker.dart';
 
-
-const ParametersPlaceId = 'place_id';
-
 class TripPlannerController extends GetxController with AsyncWorkerController {
 
   TripPlannerController();

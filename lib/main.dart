@@ -47,6 +47,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final pages = Routes.values.map((e) => e.page).toList();
     return GetMaterialApp(
       title: 'Country before travel',
       debugShowCheckedModeBanner: false,

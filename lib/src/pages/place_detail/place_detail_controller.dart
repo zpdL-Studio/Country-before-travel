@@ -5,9 +5,7 @@ import 'package:google_place/google_place.dart';
 import '../../service/google_place/google_place_photo_model.dart';
 import '../../service/google_place/google_place_service.dart';
 import '../../widget/async_worker.dart';
-
-
-const ParametersPlaceId = 'place_id';
+import 'place_detail_contract.dart';
 
 class PlaceDetailController extends GetxController with AsyncWorkerController {
 
@@ -41,7 +39,7 @@ class PlaceDetailController extends GetxController with AsyncWorkerController {
   void onInit() {
     super.onInit();
 
-    placeId = Get.parameters[ParametersPlaceId];
+    placeId = Get.parameters[Parameters.PLACE_ID.value];
   }
 
   @override
