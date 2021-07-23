@@ -82,8 +82,14 @@ class PlaceSearchPage extends AsyncWorkerBuilder<PlaceSearchController> {
                       if(i > 0)
                         Divider(),
                       AppScaleButton(
-                        onTap: () {
-                          controller.searchByQuery(item.description ?? '');
+                        onTap: () async {
+                          final placeId = item.placeId;
+                          if(placeId != null) {
+                            controller.focusNode.unfocus();
+                            final results = await PlaceSearchBindings.toDetail(placeId);
+                          } else {
+                            controller.searchByQuery(item.structuredFormatting?.mainText ?? '');
+                          }
                         },
                         pressScale: 0.97,
                         child: Padding(
@@ -182,7 +188,7 @@ class PlaceSearchPage extends AsyncWorkerBuilder<PlaceSearchController> {
               style: R.theme.backgroundColor.bodyText1,
               cursorColor: R.color.accentColor,
               decoration: InputDecoration.collapsed(
-                  hintText: R.string.searchLow, hintStyle: R.theme.backgroundColor.bodyText1),
+                  hintText: R.string.searchLow, hintStyle: R.theme.backgroundColor.withOpacity(0.7).bodyText1),
               onChanged: (value) {
                 controller.searchText = value;
               },

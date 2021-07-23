@@ -93,11 +93,17 @@ class PlaceSearchController extends GetxController with AsyncWorkerController {
     });
   }
 
+  void setSearchText(String value) {
+    textEditingController.text = value;
+    textEditingController.selection = TextSelection.fromPosition(TextPosition(offset: value.length));
+    _searchText.value = value;
+  }
+
   void searchByQuery(String value) {
     if(value.isNotEmpty) {
-      textEditingController.text = value;
-      textEditingController.selection = TextSelection.fromPosition(TextPosition(offset: value.length));
+      textEditingController.value = TextEditingValue(text: value, selection: TextSelection.fromPosition(TextPosition(offset: value.length)));
       _searchText.value = value;
+      search(value);
     }
   }
 
