@@ -41,52 +41,89 @@ class PlaceSearchPage extends AsyncWorkerBuilder<PlaceSearchController> {
             }),
             Obx(() {
               final QueryAutoComplete? queryAutoComplete = controller.searchTextHasFocus.value ? controller.autoCompletes.value : null;
+              final List<String> recentTexts = controller.searchTextHasFocus.value ? controller.recentTexts : [];
+
               final Widget child;
               final Widget disposeChild;
-              if(queryAutoComplete != null && queryAutoComplete.predictions.isNotEmpty) {
+              if((queryAutoComplete != null && queryAutoComplete.predictions.isNotEmpty) || recentTexts.isNotEmpty) {
                 final children = <Widget>[];
-                for (int i = 0; i < queryAutoComplete.predictions.length; i++) {
-                  final item = queryAutoComplete.predictions[i];
-                  children.addAll([
-                    if(i > 0)
-                      Divider(),
-                    AppScaleButton(
-                      onTap: () {
-                        controller.searchByQuery(item.description ?? '');
-                      },
-                      pressScale: 0.97,
-                      child: Padding(
-                        padding: const EdgeInsetsOnly(vertical: 16, horizontal: 16),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 20,
-                              height: 20,
-                              margin: const EdgeInsetsOnly(end: 8),
-                              child: Icon(
-                                item.placeId != null ? Icons.place : Icons.search,
-                                color: R.color.black,
-                                size: 20,
-                              )
-                            ),
-                            Expanded(child: Text(item.description ?? '', style: R.bodyText2)),
-                          ],
-                        ),
+                if(recentTexts.isNotEmpty) {
+                  final foregroundColor = R.color.primaryOverColor.withOpacity(0.9);
+                  children.add(Padding(
+                    padding: const EdgeInsetsOnly(vertical: 16, horizontal: 16),
+                    child: Container(
+                      width: double.infinity,
+                      child: Wrap(
+                        spacing: 12,
+                        runSpacing: 8,
+                        alignment: WrapAlignment.start,
+                        children: recentTexts
+                            .map((e) => AppScaleButton(
+                            onTap: () {
+                              controller.searchByQuery(e);
+                            },
+                            pressScale: 0.95,
+                            shape: R.shape.rect(color: foregroundColor),
+                            child: Container(
+                              padding: const EdgeInsetsOnly(vertical: 4, horizontal: 8),
+                              child: Text(e, style: foregroundColor.bodyText2),
+                            )))
+                            .toList(),
                       ),
                     ),
-                  ]);
+                  ));
+                }
+
+                if(queryAutoComplete != null && queryAutoComplete.predictions.isNotEmpty) {
+                  final foregroundColor = R.color.primaryOverColor.withOpacity(0.8);
+                  for (int i = 0; i < queryAutoComplete.predictions.length; i++) {
+                    final item = queryAutoComplete.predictions[i];
+                    children.addAll([
+                      if(i > 0)
+                        Divider(),
+                      AppScaleButton(
+                        onTap: () {
+                          controller.searchByQuery(item.description ?? '');
+                        },
+                        pressScale: 0.97,
+                        child: Padding(
+                          padding: const EdgeInsetsOnly(vertical: 16, horizontal: 16),
+                          child: Row(
+                            children: [
+                              Container(
+                                  width: 20,
+                                  height: 20,
+                                  margin: const EdgeInsetsOnly(end: 8),
+                                  child: Icon(
+                                    item.placeId != null ? Icons.place : Icons.search,
+                                    color: foregroundColor,
+                                    size: 20,
+                                  )
+                              ),
+                              Expanded(child: Text(item.description ?? '', style: foregroundColor.bodyText2)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ]);
+                  }
                 }
 
                 child = GlassContainer(
-                  key: ValueKey(queryAutoComplete.query),
+                  key: ValueKey(queryAutoComplete?.query ?? ''),
+                  opacity: 0.4,
+                  sigmaX: 8.0,
+                  sigmaY: 8.0,
+                  color: R.color.primaryColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
                   ),
                   child: Padding(
                     padding: const EdgeInsetsOnly(vertical: 8),
-                    child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    child: ListView(
+                        // mainAxisSize: MainAxisSize.min,
+                        // crossAxisAlignment: CrossAxisAlignment.start,
+                        shrinkWrap: true,
                         children: children
                     ),
                   ),
@@ -94,6 +131,8 @@ class PlaceSearchPage extends AsyncWorkerBuilder<PlaceSearchController> {
 
                 disposeChild = GestureDetector(
                   child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
                     color: Colors.transparent,
                   ),
                   onTap: () {
@@ -107,14 +146,14 @@ class PlaceSearchPage extends AsyncWorkerBuilder<PlaceSearchController> {
                 disposeChild = Container();
               }
 
-              return Column(
+              return Stack(
                 children: [
+                  disposeChild,
                   AnimatedSwitcherSlide(
                       switchInCurve: Curves.easeOutBack,
                       switchOutCurve: Curves.easeOut,
                       alignment: Alignment.topCenter,
                       child: child),
-                  Expanded(child: disposeChild)
                 ],
               );
             }),
@@ -143,18 +182,18 @@ class PlaceSearchPage extends AsyncWorkerBuilder<PlaceSearchController> {
               style: R.theme.backgroundColor.bodyText1,
               cursorColor: R.color.accentColor,
               decoration: InputDecoration.collapsed(
-                  hintText: '검색', hintStyle: R.theme.backgroundColor.bodyText1),
+                  hintText: R.string.searchLow, hintStyle: R.theme.backgroundColor.bodyText1),
               onChanged: (value) {
                 controller.searchText = value;
               },
               onSubmitted: (value) {
-                controller.search();
+                controller.search(value);
               },
             ),
           ),
           AppScaleButton(
             onTap: () {
-              controller.search();
+              controller.search(controller.textEditingController.text);
             },
             pressScale: 0.90,
             shape: CircleBorder(),

@@ -14,6 +14,11 @@ class color {
   static const black = Colors.black;
 
   static Color get primaryColor => ultimate_gray;
+  static Color get primaryOverColor => Colors.white;
+
+  static Color get accentColor => illuminating;
+  static Color get accentOverColor => Colors.black;
+
   static Color get backgroundColor => cloud_dance;
 
   static Color get foregroundColor => Colors.black;
@@ -23,7 +28,7 @@ class color {
   static Color get foregroundColor2 => Colors.black26;
   static Color get foregroundColor1 => Colors.black12;
 
-  static Color get accentColor => illuminating;
+
 }
 
 extension ColorTextStyle on Color {

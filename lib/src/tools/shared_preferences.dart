@@ -2,45 +2,48 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart' as sp;
 
-enum SharedPreferencesKey {
-  RECENT_SEARCH
+enum SharedPreferences {
+  RECENT_SEARCH,
+  RECENT_SEARCH_LIST,
 }
 
-extension SharedPreferencesKeyExtension on SharedPreferencesKey {
+extension SharedPreferencesExtension on SharedPreferences {
   String get key {
     switch(this) {
-      case SharedPreferencesKey.RECENT_SEARCH:
+      case SharedPreferences.RECENT_SEARCH:
         return 'RECENT_SEARCH';
+      case SharedPreferences.RECENT_SEARCH_LIST:
+        return 'RECENT_SEARCH_LIST';
     }
   }
-}
 
-class SharedPreferences {
-  static Future<bool> set(SharedPreferencesKey key, dynamic value) async {
+  Future<bool> set(dynamic value) async {
     sp.SharedPreferences prefs = await sp.SharedPreferences.getInstance();
     bool result = false;
 
     if (value is int) {
-      result = await prefs.setInt(key.key, value);
+      result = await prefs.setInt(key, value);
     } else if (value is double) {
-      result = await prefs.setDouble(key.key, value);
+      result = await prefs.setDouble(key, value);
     } else if (value is String) {
-      result = await prefs.setString(key.key, value);
+      result = await prefs.setString(key, value);
     } else if (value is bool) {
-      result = await prefs.setBool(key.key, value);
+      result = await prefs.setBool(key, value);
     } else if (value is Map) {
-      result = await prefs.setString(key.key, json.encode(value));
+      result = await prefs.setString(key, json.encode(value));
+    } else if (value is List<String>) {
+      result = await prefs.setStringList(key, value);
     }
     return result;
   }
 
-  static Future<T> getOrDefault<T>(SharedPreferencesKey key, T value) async {
-    return (await get<T>(key)) ?? value;
+  Future<T> getOrDefault<T>(T value) async {
+    return (await get<T>()) ?? value;
   }
 
-  static Future<T?> get<T>(SharedPreferencesKey key) async {
+  Future<T?> get<T>() async {
     sp.SharedPreferences prefs = await sp.SharedPreferences.getInstance();
-    dynamic value = prefs.get(key.key);
+    dynamic value = prefs.get(key);
     if(value == null) {
       return null;
     }
@@ -67,8 +70,13 @@ class SharedPreferences {
     return null;
   }
 
-  static Future<bool> remove(SharedPreferencesKey key) async {
+  Future<List<String>?> getStringList() async {
     sp.SharedPreferences prefs = await sp.SharedPreferences.getInstance();
-    return await prefs.remove(key.key);
+    return prefs.getStringList(key);
+  }
+
+  Future<bool> remove() async {
+    sp.SharedPreferences prefs = await sp.SharedPreferences.getInstance();
+    return await prefs.remove(key);
   }
 }

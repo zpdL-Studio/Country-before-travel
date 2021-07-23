@@ -24,4 +24,6 @@ class LruMemoryCache<K, V> extends LruCache<K, V> {
 
   @override
   void set(K key, V value) => _cache[key] = value;
+
+  Iterable<MapEntry<K, V>> get entries => _cache.entries;
 }

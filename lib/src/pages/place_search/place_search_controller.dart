@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import '../../service/google_place/google_place_model.dart';
 import '../../service/google_place/google_place_service.dart';
 import '../../tools/aync_debounce_worker.dart';
+import '../../tools/lru_cache/lru_memory_cache.dart';
+import '../../tools/shared_preferences.dart';
 import '../../widget/async_worker.dart';
 import 'place_search_contract.dart';
 
@@ -24,8 +26,8 @@ class PlaceSearchController extends GetxController with AsyncWorkerController {
 
   final autoCompletes = Rxn<QueryAutoComplete>();
   final searchResponse = Rx<GooglePlaceSearchResponse>(GooglePlaceSearchResponse.empty());
-
-
+  final recentTexts = RxList<String>.empty();
+  final recentTextsCache = LruMemoryCache<String, String>(maximumSize: 10);
 
   // final autoComplete = RxString('');
   // static const _queryAutocompleteKey = '_queryAutocomplete';
@@ -63,6 +65,7 @@ class PlaceSearchController extends GetxController with AsyncWorkerController {
 
     _googlePlace.recentSearch = textEditingController.text;
     _googlePlace.recentQueryAutoComplete = autoCompletes.value;
+    SharedPreferences.RECENT_SEARCH_LIST.set(recentTexts.toList());
   }
 
   void _init() async {
@@ -72,6 +75,13 @@ class PlaceSearchController extends GetxController with AsyncWorkerController {
     textEditingController.selection = TextSelection.fromPosition(TextPosition(offset: recentSearch.length));
     _searchText.value = recentSearch;
     autoCompletes.value = _googlePlace.recentQueryAutoComplete;
+    final recentSearchList = await SharedPreferences.RECENT_SEARCH_LIST.getStringList();
+    if(recentSearchList != null) {
+      for(final recent in recentSearchList) {
+        recentTextsCache[recent] = recent;
+      }
+    }
+    recentTexts.value = recentTextsCache.entries.map((e) => e.value).toList();
 
     _searchText.listen((_) {
       if(_.trim().length > 1) {
@@ -87,23 +97,21 @@ class PlaceSearchController extends GetxController with AsyncWorkerController {
     if(value.isNotEmpty) {
       textEditingController.text = value;
       textEditingController.selection = TextSelection.fromPosition(TextPosition(offset: value.length));
-      _search(value);
+      _searchText.value = value;
     }
   }
 
-  void search() async {
-    final text = textEditingController.text;
-    if(text.isNotEmpty) {
-      _search(text);
-    }
-  }
+  void search(String? value) {
+    if(value != null && value.isNotEmpty) {
+      recentTextsCache[value] = value;
+      recentTexts.value = recentTextsCache.entries.map((e) => e.value).toList();
 
-  void _search(String value) {
-    asyncWorker(Future(() async {
-      final results = await _googlePlace.searchText(value);
-      focusNode.unfocus();
-      searchResponse.value = results;
-    }));
+      asyncWorker(Future(() async {
+        final results = await _googlePlace.searchText(value);
+        focusNode.unfocus();
+        searchResponse.value = results;
+      }));
+    }
   }
 
   void _changedFocus() {

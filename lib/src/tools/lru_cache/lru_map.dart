@@ -78,7 +78,7 @@ class LruMap<K, V> implements Map<K, V> {
 
   @override
   Iterable<MapEntry<K, V>> get entries =>
-      _entries.values.map((entry) => MapEntry<K, V>(entry.key, entry.value));
+      _iterable().map((entry) => MapEntry<K, V>(entry.key, entry.value));
 
   @override
   void forEach(void action(K key, V value)) {

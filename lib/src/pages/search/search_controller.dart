@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../config/shared_preferences.dart';
 import '../../model/country_code_model.dart';
 import '../../repository/country_code/country_code_repository.dart';
 import '../../repository/country_flag/country_flag_repository.dart';
@@ -46,32 +45,32 @@ class SearchController extends GetxController with AsyncWorkerController {
   @override
   void onClose() {
     super.onClose();
-    SharedPreferences.set(SharedPreferencesKey.RECENT_SEARCH, textEditingController.text);
-    textEditingController.dispose();
+    // SharedPreferences.set(SharedPreferencesKey.RECENT_SEARCH, textEditingController.text);
+    // textEditingController.dispose();
   }
 
   Future<void> _init() async {
-    try {
-      hiveBox = await hiveService.getBox<RecentCountryCodeModel>();
-      _refreshRecent();
-    } catch(e) {
-    }
-
-    try {
-      final recentSearch = await SharedPreferences.getOrDefault(SharedPreferencesKey.RECENT_SEARCH, '');
-      if(recentSearch.isNotEmpty) {
-        var res = await countryCodeRepository.getCountyCodeList(cond: recentSearch);
-        _searchedList.value = res.data.map((e) => RecentCountryCodeModel(code: e.country_iso_alp2, name: e.country_nm)).toList();
-      } else {
-        _searchedList.value = [];
-      }
-
-      _searchedText.value = recentSearch;
-      textEditingController.text = recentSearch;
-      textEditingController.selection = TextSelection.fromPosition(TextPosition(offset: recentSearch.length));
-    } catch(e) {
-      // _mofaNoticeResponse.addError(e);
-    }
+    // try {
+    //   hiveBox = await hiveService.getBox<RecentCountryCodeModel>();
+    //   _refreshRecent();
+    // } catch(e) {
+    // }
+    //
+    // try {
+    //   final recentSearch = await SharedPreferences.getOrDefault(SharedPreferencesKey.RECENT_SEARCH, '');
+    //   if(recentSearch.isNotEmpty) {
+    //     var res = await countryCodeRepository.getCountyCodeList(cond: recentSearch);
+    //     _searchedList.value = res.data.map((e) => RecentCountryCodeModel(code: e.country_iso_alp2, name: e.country_nm)).toList();
+    //   } else {
+    //     _searchedList.value = [];
+    //   }
+    //
+    //   _searchedText.value = recentSearch;
+    //   textEditingController.text = recentSearch;
+    //   textEditingController.selection = TextSelection.fromPosition(TextPosition(offset: recentSearch.length));
+    // } catch(e) {
+    //   // _mofaNoticeResponse.addError(e);
+    // }
   }
 
 

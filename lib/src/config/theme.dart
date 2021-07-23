@@ -14,11 +14,11 @@ ThemeData get themeAviary {
   //     ?? 0.0;
 
   return ThemeData(
-    primaryColor: R.color.ultimate_gray,
-    backgroundColor: R.color.cloud_dance,
-    accentColor: R.color.illuminating,
-    scaffoldBackgroundColor: R.color.cloud_dance,
-    textTheme: defaultThemeData.textTheme.apply(displayColor: R.color.black.withAlpha(0x8A), bodyColor: R.color.black,),
+    primaryColor: R.color.primaryColor,
+    backgroundColor: R.color.backgroundColor,
+    accentColor: R.color.accentColor,
+    scaffoldBackgroundColor: R.color.backgroundColor,
+    textTheme: defaultThemeData.textTheme.apply(displayColor: R.color.foregroundColor.withAlpha(0x8A), bodyColor: R.color.foregroundColor,),
     dividerTheme: DividerThemeData(
       color: R.color.ultimate_gray,
       indent: 16,

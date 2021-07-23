@@ -8,6 +8,8 @@ part of 'localization.dart';
 
 final localizedLabels = <Locale, AppLocalizationsData>{
   Locale.fromSubtags(languageCode: 'en'): const AppLocalizationsData(
+    searchLow: 'search',
+    search: 'Search',
     okLow: 'ok',
     ok: 'Ok',
     cancelLow: 'cancel',
@@ -57,6 +59,8 @@ final localizedLabels = <Locale, AppLocalizationsData>{
     ),
   ),
   Locale.fromSubtags(languageCode: 'ko'): const AppLocalizationsData(
+    searchLow: '검색',
+    search: '검색',
     okLow: '확인',
     ok: '확인',
     cancelLow: '취소',
@@ -118,6 +122,8 @@ enum Gender {
 
 class AppLocalizationsData {
   const AppLocalizationsData({
+    required this.searchLow,
+    required this.search,
     required this.okLow,
     required this.ok,
     required this.cancelLow,
@@ -131,6 +137,8 @@ class AppLocalizationsData {
     required this.dates,
   });
 
+  final String searchLow;
+  final String search;
   final String okLow;
   final String ok;
   final String cancelLow;
@@ -144,6 +152,8 @@ class AppLocalizationsData {
   final AppLocalizationsDataDates dates;
   factory AppLocalizationsData.fromJson(Map<String, Object?> map) =>
       AppLocalizationsData(
+        searchLow: map['searchLow']! as String,
+        search: map['search']! as String,
         okLow: map['okLow']! as String,
         ok: map['ok']! as String,
         cancelLow: map['cancelLow']! as String,
@@ -162,6 +172,8 @@ class AppLocalizationsData {
       );
 
   AppLocalizationsData copyWith({
+    String? searchLow,
+    String? search,
     String? okLow,
     String? ok,
     String? cancelLow,
@@ -175,6 +187,8 @@ class AppLocalizationsData {
     AppLocalizationsDataDates? dates,
   }) =>
       AppLocalizationsData(
+        searchLow: searchLow ?? this.searchLow,
+        search: search ?? this.search,
         okLow: okLow ?? this.okLow,
         ok: ok ?? this.ok,
         cancelLow: cancelLow ?? this.cancelLow,
@@ -192,6 +206,8 @@ class AppLocalizationsData {
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is AppLocalizationsData &&
+          searchLow == other.searchLow &&
+          search == other.search &&
           okLow == other.okLow &&
           ok == other.ok &&
           cancelLow == other.cancelLow &&
@@ -206,6 +222,8 @@ class AppLocalizationsData {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
+      searchLow.hashCode ^
+      search.hashCode ^
       okLow.hashCode ^
       ok.hashCode ^
       cancelLow.hashCode ^

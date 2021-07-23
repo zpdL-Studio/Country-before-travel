@@ -145,7 +145,7 @@ class HomePage extends GetWidget<HomeController> {
         );
       }),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add, color: R.color.primaryColor,),
+        child: Icon(Icons.add, color: R.color.accentOverColor,),
         onPressed: () async {
           Routes.TRIP_PLANNER.toNamedWithLogin();
 
@@ -166,39 +166,36 @@ class HomePage extends GetWidget<HomeController> {
         title: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
             return SafeArea(
-              child: Hero(
-                tag: Routes.SEARCH,
-                child: Container(
-                  padding: const EdgeInsetsOnly(
-                      start: kToolbarHeight, end: 8, vertical: 8),
-                  height: kToolbarHeight,
-                  child: AppScaleButton(
-                      onTap: () {
-                        Routes.SEARCH.toNamed();
-                      },
-                      pressScale: 0.95,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          side: BorderSide(color: R.color.backgroundColor)),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                              child: Container(
-                            padding: const EdgeInsetsOnly(horizontal: 16),
-                            child: Text('검색',
-                                style: R.color.backgroundColor.bodyText1),
-                          )),
-                          Padding(
-                            padding: const EdgeInsetsOnly(all: 8),
-                            child: Icon(
-                              Icons.search,
-                              color: R.color.backgroundColor,
-                            ),
-                          )
-                        ],
-                      )),
-                ),
+              child: Container(
+                padding: const EdgeInsetsOnly(
+                    start: kToolbarHeight, end: 8, vertical: 8),
+                height: kToolbarHeight,
+                child: AppScaleButton(
+                    onTap: () {
+                      Routes.PLACE_SEARCH.toNamed();
+                    },
+                    pressScale: 0.95,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        side: BorderSide(color: R.color.backgroundColor)),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                            child: Container(
+                          padding: const EdgeInsetsOnly(horizontal: 16),
+                          child: Text(R.string.searchLow,
+                              style: R.color.backgroundColor.bodyText1),
+                        )),
+                        Padding(
+                          padding: const EdgeInsetsOnly(all: 8),
+                          child: Icon(
+                            Icons.search,
+                            color: R.color.backgroundColor,
+                          ),
+                        )
+                      ],
+                    )),
               ),
             );
           },
