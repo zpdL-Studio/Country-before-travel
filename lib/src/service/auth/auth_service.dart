@@ -1,17 +1,19 @@
+import 'dart:async';
+
 import 'package:device_info/device_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../log.dart';
+import '../../firebase/auth.dart';
 import '../../firebase/firestore.dart';
 import '../../firebase/model/user/user_model.dart';
 
 class AuthService extends GetxService {
 
   Future<AuthService> init() async {
-    FirebaseAuth.instance.authStateChanges().listen((User? user) async {
+    _authSubscription = _auth.authStateChanges().listen((User? user) async {
       if (user == null) {
         Log.i('User is currently signed out!');
         authModel.value = null;
@@ -30,13 +32,19 @@ class AuthService extends GetxService {
     return this;
   }
 
-  final _fireBaseAuth = FirebaseAuth.instance;
+  @override
+  void onClose() {
+    _authSubscription?.cancel();
+    _authSubscription = null;
+    super.onClose();
+  }
+
+  final _auth = Auth();
+  StreamSubscription? _authSubscription;
 
   final Rxn<AuthModel> authModel = Rxn<AuthModel>();
 
-  bool isLogin() => _fireBaseAuth.currentUser != null;
-
-  User? get user => _fireBaseAuth.currentUser;
+  bool isLogin() => _auth.user != null;
 
   Future<AuthModel> _getAuthModel(User user) async {
     try {
@@ -51,43 +59,26 @@ class AuthService extends GetxService {
     }
   }
 
-  Future<AuthModel?> signInWithGoogle() async {
+  Future<AuthModel?> signIn(UserAuthType userAuthType) async {
     try {
-      UserCredential? userCredential;
-
-      if (kIsWeb) {
-        var googleProvider = GoogleAuthProvider();
-        userCredential = await _fireBaseAuth.signInWithPopup(googleProvider);
-      } else {
-        final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-        if(googleUser != null) {
-          final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-          final googleAuthCredential = GoogleAuthProvider.credential(
-            accessToken: googleAuth.accessToken,
-            idToken: googleAuth.idToken,
-          );
-          userCredential = await _fireBaseAuth.signInWithCredential(googleAuthCredential);
-        }
+      User? user;
+      switch(userAuthType) {
+        case UserAuthType.ANONYMOUSLY:
+          user = await _auth.signInAnonymously();
+          break;
+        case UserAuthType.GOOGLE:
+          user = await _auth.signInWithGoogle();
+          break;
       }
 
-      return await _loginUserModelFor(userCredential?.user, UserAuthType.GOOGLE);
+      return await _loginUserModelFor(user, userAuthType);
     } catch (e) {
       Log.e('AuthService : signInWithGoogle error : $e');
       rethrow;
     }
   }
 
-  Future<AuthModel?> signInAnonymously() async {
-    try {
-      final userCredential = await _fireBaseAuth.signInAnonymously();
-      return await _loginUserModelFor(userCredential.user, UserAuthType.ANONYMOUSLY);
-    } catch (e) {
-      Log.e('AuthService : _signInAnonymously error : $e');
-      rethrow;
-    }
-  }
-
-  Future<void> signOut() => _fireBaseAuth.signOut();
+  Future<void> signOut() => _auth.signOut();
 
   Future<AuthModel?> _loginUserModelFor(User? user, UserAuthType userAuthType) async {
     if(user != null) {

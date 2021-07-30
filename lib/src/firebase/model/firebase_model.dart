@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class FirebaseModel<M> {
-  final String id;
+  final DocumentSnapshot doc;
   final M model;
 
-  FirebaseModel(this.id, this.model);
+  FirebaseModel(this.doc, this.model);
 }

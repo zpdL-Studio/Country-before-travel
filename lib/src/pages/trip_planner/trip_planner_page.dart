@@ -1,5 +1,6 @@
 
 import 'package:country_before_travel/res/values.dart' as R; // ignore: library_prefixes, prefer_relative_imports
+import 'package:country_before_travel/src/pages/place_detail/place_detail_contract.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:widgets_by_zpdl/material.dart';
@@ -15,6 +16,9 @@ class TripPlannerPage extends AsyncWorkerBuilder<TripPlannerController> {
 
   @override
   Widget asyncWorkerBuilder(BuildContext context) {
+    if(controller.tripPlanModel.value == null) {
+      return Container();
+    }
     return Scaffold(
       body: NestedScrollView(
           headerSliverBuilder: (context, _) {
@@ -31,9 +35,13 @@ class TripPlannerPage extends AsyncWorkerBuilder<TripPlannerController> {
             // onPageChanged: onPageChanged,
           )),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add, color: R.color.primaryColor,),
+        child: Icon(Icons.add, color: R.color.accentOverColor,),
         onPressed: () async {
-          final result = TripPlannerBindings.toSearch();
+          final result = await TripPlannerBindings.toSearch();
+          if(result is PlaceDetailResult) {
+            print('result $result');
+            controller.addPlace(result);
+          }
         },
       ),
     );

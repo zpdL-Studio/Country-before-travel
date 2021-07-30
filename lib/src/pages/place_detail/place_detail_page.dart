@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_before_travel/res/values.dart' as R; // ignore: library_prefixes, prefer_relative_imports
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_place/google_place.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
@@ -13,6 +14,7 @@ import '../../service/google_place/google_place_photo_provider.dart';
 import '../../widget/async_worker.dart';
 import '../../widget/rating_star_widget.dart';
 import 'photo/place_photo_page.dart';
+import 'place_detail_contract.dart';
 import 'place_detail_controller.dart';
 
 class PlaceDetailPage extends AsyncWorkerBuilder<PlaceDetailController> {
@@ -59,11 +61,27 @@ class PlaceDetailPage extends AsyncWorkerBuilder<PlaceDetailController> {
                       ),
                       _buildReviews(context, reviews),
                     ],
-                  SliverToBoxAdapter(child: ColumnSpace(32)),
+                  // if(controller.mode == Mode.SELECT)
+                  //   SliverToBoxAdapter(
+                  //     child: Padding(
+                  //       padding: const EdgeInsetsOnly(horizontal: hPadding, vertical: vPadding),
+                  //       child: AppElevationButton(
+                  //       onTap: () {},
+                  //       shape: R.shape.rect(),
+                  //       color: R.color.accentColor,
+                  //       child: Container(
+                  //           height: 48,
+                  //           alignment: AlignmentDirectional.center,
+                  //           child: Text('Select',
+                  //               style: R.color.accentOverColor.headline6))),
+                  //     ),
+                  //   ),
+                  SliverToBoxAdapter(child: ColumnSpace(controller.mode == Mode.SELECT ? 64 : 32)),
                 ],
               ),
+              floatingActionButton: _buildFloatingActionButton()
             );
-          }
+      }
       );
     } else {
       return Container(
@@ -127,6 +145,38 @@ class PlaceDetailPage extends AsyncWorkerBuilder<PlaceDetailController> {
         ],
       );
     });
+  }
+
+  FloatingActionButton? _buildFloatingActionButton() {
+    return controller.mode == Mode.SELECT
+        ? FloatingActionButton(
+            child: Icon(
+              Icons.check_outlined,
+              color: R.color.accentOverColor,
+            ),
+            onPressed: () async {
+              final detailsResult = controller.detailsResult;
+              final placeId = detailsResult?.placeId;
+              final name = detailsResult?.name;
+              final lat = detailsResult?.geometry?.location?.lat;
+              final lng = detailsResult?.geometry?.location?.lng;
+
+              if(placeId != null && name != null && lat != null && lng != null) {
+                final photos = controller.photos;
+                final googlePlacePhotoModel = photos.isNotEmpty ? photos.first : null;
+
+                Get.back(result: PlaceDetailResult(
+                    placeId: placeId,
+                    name: name,
+                    address: detailsResult?.formattedAddress,
+                    phoneNumber: detailsResult?.formattedPhoneNumber,
+                    lat: lat,
+                    lng: lng,
+                    photo: googlePlacePhotoModel));
+              }
+            },
+          )
+        : null;
   }
 
   Widget _buildPhotos(BuildContext context, List<GooglePlacePhotoModel> list, PageController pageController) {

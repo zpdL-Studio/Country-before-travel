@@ -10,7 +10,7 @@ class TripPlannerBindings extends Bindings {
 
   @override
   void dependencies() {
-    Get.lazyPut(() => TripPlannerController());
+    Get.lazyPut(() => TripPlannerController(Get.find(), Get.find()));
   }
 
   static GetPage getPage(String name) => GetPage(
@@ -22,5 +22,11 @@ class TripPlannerBindings extends Bindings {
     ]
   );
 
-  static Future<dynamic>? toSearch() => Get.toNamed('${Get.currentRoute}$SEARCH');
+  static Future<dynamic>? toSearch() {
+    final uri = Uri.parse(Get.currentRoute);
+    print('uri.path : ${uri.path}');
+    print('uri.data : ${uri.data}');
+    print('uri.queryParameters : ${uri.queryParameters}');
+    return Get.toNamed('${uri.path}$SEARCH');
+  }
 }

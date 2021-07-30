@@ -4,6 +4,7 @@ import 'package:widgets_by_zpdl/material.dart';
 
 import '../../widget/buttons.dart';
 import '../routes.dart';
+import '../trip_planner/trip_planner_contract.dart';
 import 'home_controller.dart';
 
 class HomePage extends GetWidget<HomeController> {
@@ -147,7 +148,7 @@ class HomePage extends GetWidget<HomeController> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add, color: R.color.accentOverColor,),
         onPressed: () async {
-          Routes.TRIP_PLANNER.toNamedWithLogin();
+          Routes.TRIP_PLANNER.toNamedWithLogin(parameters: tripPlannerParameters(id: '8jnMdWu8jaD0AyWDaHpS'));
 
           // showSimpleTextDialog(title: R.string.plurals.man(plural: Plural.one), body: R.string.multiline);
         },

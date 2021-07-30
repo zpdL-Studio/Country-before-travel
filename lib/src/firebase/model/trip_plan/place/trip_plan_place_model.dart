@@ -20,7 +20,7 @@ class TripPlanPlaceModel with _$TripPlanPlaceModel {
 
   static FirebaseModel<TripPlanPlaceModel> fromFireStore(DocumentSnapshot doc) {
     Map<String, dynamic> json = doc.data() as Map<String, dynamic>;
-    return FirebaseModel(doc.id, TripPlanPlaceModel.fromJson(json));
+    return FirebaseModel(doc, TripPlanPlaceModel.fromJson(json));
   }
 
   factory TripPlanPlaceModel.fromJson(Map<String, dynamic> json) => _$TripPlanPlaceModelFromJson(json);

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../../firebase/model/user/user_model.dart';
 import '../../service/auth/auth_service.dart';
 import '../../widget/async_worker.dart';
 import 'login_contract.dart';
@@ -40,10 +41,10 @@ class LoginController extends GetxController with AsyncWorkerController {
 
     switch(type) {
       case SocialLoginType.GOOGLE:
-        result = await asyncWorkerNullable(authService.signInWithGoogle());
+        result = await asyncWorkerNullable(authService.signIn(UserAuthType.GOOGLE));
         break;
       case SocialLoginType.ANONYMOUSLY:
-        result = await asyncWorkerNullable(authService.signInAnonymously());
+        result = await asyncWorkerNullable(authService.signIn(UserAuthType.ANONYMOUSLY));
         break;
     }
 

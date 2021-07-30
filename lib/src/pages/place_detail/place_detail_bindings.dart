@@ -12,14 +12,14 @@ class PlaceDetailBindings extends Bindings {
 
   @override
   void dependencies() {
-    Get.lazyPut(() => PlaceDetailController(googlePlace: Get.find()));
+    Get.lazyPut(() => PlaceDetailController(mode, googlePlace: Get.find()));
   }
 
   static GetPage getPageInSelect(String name) =>
       getPage(name, mode: Mode.SELECT);
 
   static GetPage getPage(String name, {Mode mode = Mode.DEFAULT}) => GetPage(
-        name: name,
+        name: '$name',
         binding: PlaceDetailBindings(mode),
         page: () => PlaceDetailPage(),
       );

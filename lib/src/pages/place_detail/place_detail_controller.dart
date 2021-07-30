@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:google_place/google_place.dart';
@@ -9,9 +11,10 @@ import 'place_detail_contract.dart';
 
 class PlaceDetailController extends GetxController with AsyncWorkerController {
 
+  final Mode mode;
   final GooglePlaceService _googlePlace;
 
-  PlaceDetailController({required GooglePlaceService googlePlace})
+  PlaceDetailController(this.mode, {required GooglePlaceService googlePlace})
       : this._googlePlace = googlePlace;
 
   String? _placeId;
@@ -59,4 +62,7 @@ class PlaceDetailController extends GetxController with AsyncWorkerController {
       detailsResult = result?.result;
     }
   }
+
+  Future<Uint8List?> getPhoto(String photoReference, int width, int height) =>
+      _googlePlace.getPhoto(photoReference, width, height);
 }

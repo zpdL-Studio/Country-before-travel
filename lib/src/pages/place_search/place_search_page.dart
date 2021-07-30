@@ -10,6 +10,7 @@ import '../../widget/async_worker.dart';
 import '../../widget/buttons.dart';
 import '../../widget/glass_container.dart';
 import 'place_search_bindings.dart';
+import 'place_search_contract.dart';
 import 'place_search_controller.dart';
 
 class PlaceSearchPage extends AsyncWorkerBuilder<PlaceSearchController> {
@@ -31,9 +32,8 @@ class PlaceSearchPage extends AsyncWorkerBuilder<PlaceSearchController> {
                 itemBuilder: (BuildContext context, int index) {
                   return SearchPlaceWidget(
                     googlePlaceSearchResult: list[index],
-                    onTap: () async {
-                      controller.focusNode.unfocus();
-                      final results = await PlaceSearchBindings.toDetail(list[index].placeId);
+                    onTap: () {
+                      _toPlaceDetail(list[index].placeId);
                     },
                   );
                 },
@@ -82,11 +82,10 @@ class PlaceSearchPage extends AsyncWorkerBuilder<PlaceSearchController> {
                       if(i > 0)
                         Divider(),
                       AppScaleButton(
-                        onTap: () async {
+                        onTap: () {
                           final placeId = item.placeId;
                           if(placeId != null) {
-                            controller.focusNode.unfocus();
-                            final results = await PlaceSearchBindings.toDetail(placeId);
+                            _toPlaceDetail(placeId);
                           } else {
                             controller.searchByQuery(item.structuredFormatting?.mainText ?? '');
                           }
@@ -214,6 +213,14 @@ class PlaceSearchPage extends AsyncWorkerBuilder<PlaceSearchController> {
         ],
       ),
     );
+  }
+
+  void _toPlaceDetail(String placeId) async {
+    controller.focusNode.unfocus();
+    final results = await PlaceSearchBindings.toDetail(placeId);
+    if(controller.mode == Mode.SELECT && results != null) {
+      Get.back(result: results);
+    }
   }
 }
 
