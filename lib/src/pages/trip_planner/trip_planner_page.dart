@@ -1,11 +1,12 @@
 
 import 'package:country_before_travel/res/values.dart' as R; // ignore: library_prefixes, prefer_relative_imports
-import 'package:country_before_travel/src/pages/place_detail/place_detail_contract.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:widgets_by_zpdl/material.dart';
 
+import '../../widget/app_image.dart';
 import '../../widget/async_worker.dart';
+import '../place_detail/place_detail_contract.dart';
 import 'trip_planner_bindings.dart';
 import 'trip_planner_controller.dart';
 
@@ -70,7 +71,7 @@ class TripPlannerPage extends AsyncWorkerBuilder<TripPlannerController> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               )),
-          child: R.images.fog_6126432_1920.widget(fit: BoxFit.cover),
+          child: AssetsImage(R.assets.fog61264321920, fit: BoxFit.cover),
         ),
         collapseMode: CollapseMode.parallax,
         stretchModes: [StretchMode.zoomBackground],

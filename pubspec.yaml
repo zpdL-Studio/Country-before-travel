@@ -63,6 +63,7 @@ dependencies:
   flutter_sheet_localization: ^5.1.1
   flutter_localizations:
     sdk: flutter
+  assets_annotation_by_zpdl: ^1.0.3
 
   image: ^3.0.2
   uuid: ^3.0.4
@@ -77,7 +78,7 @@ dev_dependencies:
   hive_generator: ^1.1.0
 
   flutter_sheet_localization_generator: ^5.1.7
-
+  assets_generator_by_zpdl: ^1.0.2
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

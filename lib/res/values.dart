@@ -1,24 +1,15 @@
 import 'package:get/get.dart';
 import 'package:widgets_by_zpdl/material.dart';
 
-import 'images.dart';
+import 'assets.dart';
 import 'localization.dart';
 
+export 'assets.dart';
 export 'colors.dart';
-export 'images.dart';
-
-extension ImagesWidget on images {
-  Image widget({Key? key, double? size, double? width, double? height, BoxFit fit = BoxFit.fill}) {
-    return Image.asset(
-      name,
-      width: size ?? width,
-      height: size ?? height,
-      fit: fit,
-    );
-  }
-}
 
 AppLocalizationsData get string => appLocalization;
+
+const assets = Assets();
 
 ThemeData get theme => Get.theme;
 
