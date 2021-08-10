@@ -216,7 +216,7 @@ class HomePage extends GetWidget<HomeController> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           )),
-          child: AssetsImage(R.assets.fog61264321920),
+          child: AssetsImage(R.assets.fog61264321920, fit: BoxFit.cover,),
         ),
         collapseMode: CollapseMode.parallax,
         stretchModes: [StretchMode.zoomBackground],
