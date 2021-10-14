@@ -4,7 +4,7 @@ import 'package:widgets_by_zpdl/material.dart';
 
 import '../../../service/google_place/google_place_photo_model.dart';
 import '../../../service/google_place/google_place_photo_provider.dart';
-import '../../../widget/buttons.dart';
+import '../../../widget/app_button.dart';
 import '../../../widget/glass_container.dart';
 
 

@@ -18,7 +18,9 @@ class TripPlannerPage extends AsyncWorkerBuilder<TripPlannerController> {
   @override
   Widget asyncWorkerBuilder(BuildContext context) {
     if(controller.tripPlanModel.value == null) {
-      return Container();
+      return Container(
+        color: R.color.backgroundColor,
+      );
     }
     return Scaffold(
       body: NestedScrollView(

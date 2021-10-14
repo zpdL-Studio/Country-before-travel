@@ -2,8 +2,8 @@ import 'package:country_before_travel/res/values.dart' as R; // ignore: library_
 import 'package:get/get.dart';
 import 'package:widgets_by_zpdl/material.dart';
 
+import '../../widget/app_button.dart';
 import '../../widget/app_image.dart';
-import '../../widget/buttons.dart';
 import '../routes.dart';
 import '../trip_planner/trip_planner_contract.dart';
 import 'home_controller.dart';

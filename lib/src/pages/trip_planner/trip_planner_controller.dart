@@ -44,6 +44,7 @@ class TripPlannerController extends GetxController with AsyncWorkerController {
 
     tripPlanModelSubscription = tripPlanDoc.snapshots().listen((event) {
       tripPlanModel.value = TripPlanModel.fromFireStore(event);
+      update();
     });
   }
 
